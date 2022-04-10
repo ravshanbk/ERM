@@ -83,7 +83,7 @@ class MyHomePage extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CheckingPage(employeeName: data[__].name),
+            builder: (context) => CheckingPage(employeeName: data[__].name.capitalize()),
           ),
         );
       },
@@ -105,6 +105,7 @@ class MyHomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+
           Container(
             height: gW(55.0),
             width: gW(55.0),
@@ -115,11 +116,12 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             child: Text(
-              data[__].name[0],
+              data[__].name[0].toUpperCase(),
+              
               textAlign: TextAlign.center,
               style: TextStyle(
-                height: gW(0.9),
-                fontSize: gW(55.0),
+                height: gW(1.17),
+                fontSize: gW(45.0),
                 fontWeight: FontWeight.w600,
                 color: mainColor,
               ),
@@ -127,10 +129,11 @@ class MyHomePage extends StatelessWidget {
           ),
           SizedBox(width: gW(20.0)),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                data[__].name,
+               data[__].name.length > 9? data[__].name.capitalize().substring(0,8)+"...":data[__].name.capitalize(),
                 style: TextStyle(color: Colors.white, fontSize: gW(38.0)),
               ),
               Text(
@@ -143,4 +146,10 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
+  
+}
+extension StringExtension on String {
+    String capitalize() {
+      return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+    }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
+import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/providers/bottom_nav_bar_provider.dart';
 import 'package:roxcrm/ui/home_page.dart';
 import 'package:roxcrm/ui/settings_page.dart';
@@ -34,12 +35,14 @@ class BodyPage extends StatelessWidget {
   }
 
   _appBar() {
+    debugPrint(DateTime.now().millisecondsSinceEpoch.toString());
     return AppBar(
+      shape: UnderlineInputBorder(borderSide: BorderSide(color: greyColor)),
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
       title: Text(
-        "CRM",
+        DTFM.maker(DateTime.now().millisecondsSinceEpoch),
         style: TextStyle(
           letterSpacing: 5.0,
           fontSize: gW(30.0),

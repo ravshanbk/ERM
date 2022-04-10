@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:roxcrm/hive/boxes.dart';
+import 'package:roxcrm/models/creteria_model.dart';
 
 class CheckingProvider extends ChangeNotifier {
-  List<bool> criteries = _SubCheckingProvider().criteries;
+  List<bool> criteries = List.generate(
+      Boxes.getCriterias().values.cast<Criteria>().toList().length,
+      (index) => false);
   submitFunction(int index) {
-    debugPrint(index.toString()+criteries[index].toString());
     criteries[index] = !criteries[index];
-    debugPrint(index.toString()+criteries[index].toString());
 
     notifyListeners();
   }
-}
 
-class _SubCheckingProvider {
-  List<bool> criteries = List.generate(5, (index) => false);
+  clearCriterial() {
+    criteries = List.generate(criteries.length, (index) => false);
+    notifyListeners();
+  }
 }

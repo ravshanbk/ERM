@@ -8,6 +8,7 @@ import 'package:roxcrm/ui/checking_page.dart';
 import 'package:roxcrm/ui/settings/criteria_settings.dart';
 import 'package:roxcrm/ui/settings/employee_settings.dart';
 import 'package:roxcrm/ui/settings_page.dart';
+import 'package:roxcrm/ui/show_result_since_page.dart';
 
 class RouteManager {
   static generaRouter(RouteSettings settings) {
@@ -15,13 +16,15 @@ class RouteManager {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const BodyPage());
+      case '/showResultSince':
+        return MaterialPageRoute(builder: (_) => const ShowResultSincePage());
       case "/settings":
         return MaterialPageRoute(builder: (_) => const SettingsPage());
       case "/criterias":
         return MaterialPageRoute(builder: (_) => const CriteriaSettingsPage());
       case "/employee":
         return MaterialPageRoute(builder: (_) => const EmployeeSettingsPage());
-      
+
       case "/editEmployee":
         return MaterialPageRoute(builder: (_) => const EditEmployeePage());
       case "/addEmployee":

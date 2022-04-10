@@ -21,7 +21,7 @@ class BorderedButton extends StatelessWidget {
             topRight: Radius.circular(gW(50.0)),
           ),
         ),
-        primary: Colors.transparent,
+        primary: mainColor_02,
         elevation: 0,
       ),
       onPressed: onPressed,
