@@ -3,19 +3,24 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/boxes.dart';
-import 'package:roxcrm/main.dart';
 import 'package:roxcrm/models/employee_model.dart';
 import 'package:roxcrm/ui/checking_page.dart';
+import 'package:roxcrm/ui/considering_page.dart';
 import 'package:roxcrm/ui/widgets/add_button.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final bool isHome;
+
+  const MyHomePage(this.isHome, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    DateTime data = DateTime.now();
+    debugPrint("Data: " + data.toString());
+
     SizeConfig().init(context);
     return Ink(
-      color: mainColor,
+      color: isHome ? mainColor : whiteColor,
       child: ValueListenableBuilder<Box<Employee>>(
         valueListenable: Boxes.getEmployee().listenable(),
         builder: (context, box, __) {
@@ -66,7 +71,14 @@ class MyHomePage extends StatelessWidget {
         padding: EdgeInsets.all(gW(20.0)),
         separatorBuilder: (_, __) {
           return SizedBox(
-            height: gH(20.0),
+            height: gH(90.0),
+            child: ElevatedButton(
+              child: Text("sf"),
+              onPressed: () {
+                DateTime date = DateTime.now();
+               print("date.toIso8601String()");
+              },
+            ),
           );
         },
         itemCount: data.length,
@@ -83,7 +95,9 @@ class MyHomePage extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CheckingPage(employeeName: data[__].name.capitalize()),
+            builder: (context) => isHome
+                ? CheckingPage(employeeName: data[__].name.capitalize())
+                : ConsideringPage(data[__].name.capitalize()),
           ),
         );
       },
@@ -105,7 +119,6 @@ class MyHomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Container(
             height: gW(55.0),
             width: gW(55.0),
@@ -117,7 +130,6 @@ class MyHomePage extends StatelessWidget {
             ),
             child: Text(
               data[__].name[0].toUpperCase(),
-              
               textAlign: TextAlign.center,
               style: TextStyle(
                 height: gW(1.17),
@@ -133,12 +145,15 @@ class MyHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-               data[__].name.length > 9? data[__].name.capitalize().substring(0,8)+"...":data[__].name.capitalize(),
+                data[__].name.length > 9
+                    ? data[__].name.capitalize().substring(0, 8) + "..."
+                    : data[__].name.capitalize(),
                 style: TextStyle(color: Colors.white, fontSize: gW(38.0)),
               ),
               Text(
                 "${data[__].age} / ${data[__].phoneNumber}",
-                style:const  TextStyle(color:Colors.grey,fontStyle: FontStyle.italic),
+                style: const TextStyle(
+                    color: Colors.grey, fontStyle: FontStyle.italic),
               ),
             ],
           ),
@@ -146,10 +161,10 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-  
 }
+
 extension StringExtension on String {
-    String capitalize() {
-      return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
-    }
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
 }

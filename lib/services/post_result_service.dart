@@ -7,7 +7,7 @@ class ResultService {
     debugPrint("Post Result Serverga Kirdi");
     try {
       Response res =
-          await Dio().post("192.168.0.1:5000/api/checking_result", data: data);
+          await Dio().post("http://192.168.1.6:5000/api/checking_result", data: data);
 
       return Result.fromJson(res.data);
     } catch (e) {
@@ -18,7 +18,7 @@ class ResultService {
   Future<List<Result>> getResultsSince(DateTime date) async {
     try {
       Response res = await Dio().post(
-        "http://192.168.1.6:5000/api/checking_result",
+        "http://192.168.1.6:5000/api/checking_result/since?since=1639530800000&who=go",
       );
 
       return ((res.data as List).map((e) => Result.fromJson(e)).toList());

@@ -11,23 +11,28 @@ class BodyPage extends StatelessWidget {
   const BodyPage({Key? key}) : super(key: key);
 
   final List<Widget> widgets = const [
-    MyHomePage(),
+    MyHomePage(true),
+    MyHomePage(false),
     SettingsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+   
     SizeConfig().init(context);
     return Scaffold(
         appBar: _appBar(),
         backgroundColor: mainColor,
         bottomNavigationBar: BottomNavigationBar(
+          iconSize: gW(40.0),
           currentIndex: context.watch<BottomNavBarProvider>().currentIndex,
           onTap: (v) {
             context.read<BottomNavBarProvider>().onPressed(v);
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.query_stats_sharp), label: ""),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: "")
           ],
         ),

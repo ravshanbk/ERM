@@ -52,12 +52,10 @@ class CheckingPage extends StatelessWidget {
       title: Text(employeeName),
       actions: [
         SubmitButtonForAppBar(
-          onPressed: ()  {
+          onPressed: () async {
               debugPrint("Generation Complere");
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              _snakBar(false),
-            );
+           
 
             try {
 ////////////////////////////////////////
@@ -75,7 +73,7 @@ class CheckingPage extends StatelessWidget {
                 );
               });
 ///////////////////////////////////////////////
-               ResultService()
+         await      ResultService()
                   .postResult(
                 Result(
                   result: result,
