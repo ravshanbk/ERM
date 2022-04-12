@@ -3,14 +3,16 @@ import 'package:roxcrm/models/employee_model.dart';
 
 class EmployeeHive {
   addEmployee(
+    String sellerId,
     String name,
     String age,
-    String since,
+    String phoneNumber,
   ) {
     final employee = Employee()
       ..name = name
       ..age = age
-      ..phoneNumber = since;
+      ..phoneNumber = phoneNumber
+      ..sellerId = sellerId;
 
     final box = Boxes.getEmployee();
 
@@ -23,7 +25,7 @@ class EmployeeHive {
     final employee = Employee()
       ..name = name
       ..age = age
-      ..phoneNumber =phone;
+      ..phoneNumber = phone;
 
     await box.putAt(index, employee);
   }
@@ -33,5 +35,4 @@ class EmployeeHive {
 
     box.deleteAt(index);
   }
-
 }

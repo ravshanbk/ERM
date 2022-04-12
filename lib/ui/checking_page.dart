@@ -5,6 +5,7 @@ import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/models/creteria_model.dart';
+import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/models/result_model.dart';
 import 'package:roxcrm/providers/checking_provider.dart';
 import 'package:roxcrm/services/post_result_service.dart';
@@ -24,22 +25,29 @@ class CheckingPage extends StatelessWidget {
         builder: (context, box, __) {
           final List<Criteria> data = box.values.cast<Criteria>().toList();
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: gW(25.0)),
-            child: ListView.separated(
-                padding: EdgeInsets.only(top: gW(20.0)),
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (_, __) {
-                  return _viewChild(context, data[__], __);
-                },
-                separatorBuilder: (_, __) {
-                  return SizedBox(
-                    height: gH(20.0),
-                  );
-                },
-                itemCount: data.length),
-          );
+          return data.isEmpty
+              ? Center(
+                  child: Text(
+                    "Birorta Ham Mezon Yo'q. Sozlamalar bo'limiga o'tib mezon qo'shing1",
+                    style: TextStyle(color: mainColor),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.symmetric(horizontal: gW(25.0)),
+                  child: ListView.separated(
+                      padding: EdgeInsets.only(top: gW(20.0)),
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, __) {
+                        return _viewChild(context, data[__], __);
+                      },
+                      separatorBuilder: (_, __) {
+                        return SizedBox(
+                          height: gH(20.0),
+                        );
+                      },
+                      itemCount: data.length),
+                );
         },
       ),
     );
@@ -53,39 +61,40 @@ class CheckingPage extends StatelessWidget {
       actions: [
         SubmitButtonForAppBar(
           onPressed: () async {
-              debugPrint("Generation Complere");
-
-           
+            debugPrint("Generation Complere");
 
             try {
 ////////////////////////////////////////
+              List<Criteria> criterias =
+                  Boxes.getCriterias().values.cast<Criteria>().toList();
 
               List<ResultElement> result = List.generate(
                   Boxes.getCriterias().values.cast<Criteria>().toList().length,
                   (__) {
-                List<Criteria> criterias =
-                    Boxes.getCriterias().values.cast<Criteria>().toList();
                 return ResultElement(
+                  letter: criterias[__].criteriaLetter,
+
                   context: criterias[__].criteriaText,
                   done: Provider.of<CheckingProvider>(context, listen: false)
                       .criteries[__],
-                  letter: criterias[__].criteriaLetter,
                 );
               });
+              debugPrint("result: "+result[0].letter!);
 ///////////////////////////////////////////////
-         await      ResultService()
+              await ResultService()
                   .postResult(
                 Result(
                   result: result,
-                  sellerId: "621c67e6a6730c42f7dbbfe7",
+                  when: DTFM.maker(DateTime.now().millisecondsSinceEpoch),
                   who: employeeName,
                 ),
               )
                   .then((value) {
-                if (value.who! == employeeName) {
+                if (value) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     _snakBar(true),
                   );
+                  Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     _snakBar(false),
@@ -104,18 +113,23 @@ class CheckingPage extends StatelessWidget {
   SnackBar _snakBar(bool success) {
     return SnackBar(
       dismissDirection: DismissDirection.endToStart,
-      backgroundColor: success ? Colors.green : Colors.red,
+      backgroundColor: whiteColor,
       behavior: SnackBarBehavior.floating,
       margin: EdgeInsets.only(
-        bottom: gH(400.0),
-        left: gW(10.0),
-        right: gW(10.0),
+        bottom: gH(600.0),
+        left: gW(50.0),
+        right: gW(50.0),
       ),
       content: Text(
         success
             ? "Muvaffaqiyatli Qo'shildi !"
             : "Nimadir Xato bo'ldi, Qaytadan urinib ko'ring !",
-        style: TextStyle(color: whiteColor, fontSize: gW(30.0)),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontStyle: FontStyle.italic,
+          color: success ? Colors.green : Colors.red,
+          fontSize: gW(30.0),
+        ),
       ),
     );
   }

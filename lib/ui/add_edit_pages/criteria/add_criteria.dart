@@ -5,6 +5,7 @@ import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/criteria_hive.dart';
 import 'package:roxcrm/models/creteria_model.dart';
+import 'package:roxcrm/providers/checking_provider.dart';
 import 'package:roxcrm/providers/criteria/criteria_add_provider.dart';
 import 'package:roxcrm/ui/widgets/submit_button_for_appbar.dart';
 
@@ -72,8 +73,7 @@ class AddCriteriaPage extends StatelessWidget {
         },
         keyboardType: TextInputType.name,
         cursorColor: mainColor,
-        controller:
-            context.read<CriteriaAddPageProvider>().letterController,
+        controller: context.read<CriteriaAddPageProvider>().letterController,
         style: TextStyle(
           fontSize: gW(18.0),
         ),
@@ -115,13 +115,15 @@ class AddCriteriaPage extends StatelessWidget {
               context.read<CriteriaAddPageProvider>().letterController.text,
               context
                   .read<CriteriaAddPageProvider>()
-                .criteriaTextController
+                  .criteriaTextController
                   .text);
           context.read<CriteriaAddPageProvider>().letterController.clear();
           context
               .read<CriteriaAddPageProvider>()
               .criteriaTextController
               .clear();
+          Provider.of<CheckingProvider>(context, listen: false)
+              .clearCriterias();
           Future.delayed(const Duration(milliseconds: 500), () {
             Navigator.pop(context);
           });

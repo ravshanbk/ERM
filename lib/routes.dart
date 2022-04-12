@@ -15,10 +15,8 @@ class RouteManager {
     var args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const BodyPage());
-      case '/showResultSince':
-        return MaterialPageRoute(builder: (_) => const ShowResultSincePage());
-      case "/settings":
+        return MaterialPageRoute(builder: (_) => const  BodyPage());
+         case "/settings":
         return MaterialPageRoute(builder: (_) => const SettingsPage());
       case "/criterias":
         return MaterialPageRoute(builder: (_) => const CriteriaSettingsPage());

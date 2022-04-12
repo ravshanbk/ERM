@@ -15,9 +15,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime data = DateTime.now();
-    debugPrint("Data: " + data.toString());
-
     SizeConfig().init(context);
     return Ink(
       color: isHome ? mainColor : whiteColor,
@@ -44,7 +41,7 @@ class MyHomePage extends StatelessWidget {
             "Birorta ham xodim mavjud emas. Qo'shish uchun quyidagi tugmani bosing",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.white,
+                color: isHome ? Colors.white : mainColor,
                 fontSize: gW(18.0),
                 letterSpacing: 2,
                 wordSpacing: 3),
@@ -71,14 +68,7 @@ class MyHomePage extends StatelessWidget {
         padding: EdgeInsets.all(gW(20.0)),
         separatorBuilder: (_, __) {
           return SizedBox(
-            height: gH(90.0),
-            child: ElevatedButton(
-              child: Text("sf"),
-              onPressed: () {
-                DateTime date = DateTime.now();
-               print("date.toIso8601String()");
-              },
-            ),
+            height: gH(20.0),
           );
         },
         itemCount: data.length,

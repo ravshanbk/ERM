@@ -124,12 +124,13 @@ class AddEmployeePage extends StatelessWidget {
 
           var criteria = EmployeeHive();
           await criteria.addEmployee(
+            DateTime.now().toString(),
               context.read<EmployeeAddPageProvider>().nameController.text,
               context.read<EmployeeAddPageProvider>().ageController.text,
               context
                   .read<EmployeeAddPageProvider>()
                   .phoneNumberController
-                  .text);
+                  .text,);
           await context.read<EmployeeAddPageProvider>().clearControllers();
           Future.delayed(const Duration(milliseconds: 500), () {
             Navigator.pop(context);
