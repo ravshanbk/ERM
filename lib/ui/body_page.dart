@@ -40,7 +40,6 @@ class BodyPage extends StatelessWidget {
   }
 
   _appBar() {
-    debugPrint(DateTime.now().millisecondsSinceEpoch.toString());
     return AppBar(
       shape: UnderlineInputBorder(borderSide: BorderSide(color: greyColor)),
       centerTitle: true,

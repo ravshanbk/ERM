@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:roxcrm/core/colors.dart';
+import 'package:roxcrm/core/extentions_my.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/models/employee_model.dart';
@@ -153,8 +154,4 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-extension StringExtension on String {
-  String capitalize() {
-    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
-  }
-}
+

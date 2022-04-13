@@ -1,16 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/models/result_model.dart';
+import 'package:roxcrm/providers/employee/get_employee_result_interval_provider.dart';
 import 'package:roxcrm/services/post_result_service.dart';
 import 'package:roxcrm/ui/widgets/no_data_found_by_name_widget.dart';
 import 'package:roxcrm/ui/widgets/show_result_widget.dart';
 
-class ShowResultAllByNamePage extends StatelessWidget {
+class ShowResultByNameInterval extends StatelessWidget {
   final String who;
+  final DateTime from;
+  final DateTime to;
 
-  const ShowResultAllByNamePage({required this.who, Key? key})
+  const ShowResultByNameInterval(
+      {required this.from, required this.to, required this.who, Key? key})
       : super(key: key);
 
   @override
@@ -24,7 +29,7 @@ class ShowResultAllByNamePage extends StatelessWidget {
         elevation: 0,
       ),
       body: FutureBuilder(
-        future: ResultService().getResultAllByName(who),
+        future: ResultService().getResultByNameInterval(from, to),
         builder: (context, AsyncSnapshot<List<Result>> snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return Center(
@@ -34,14 +39,15 @@ class ShowResultAllByNamePage extends StatelessWidget {
             );
           } else if (snap.connectionState == ConnectionState.done &&
               snap.data!.isNotEmpty) {
-             return ShowResultWidget(snap.data!);
+            context.read<GetEmployeeResultIntervalProvider>().clear();
+            return ShowResultWidget(snap.data!);
           } else {
+            context.read<GetEmployeeResultIntervalProvider>().clear();
+
             return NoDataFoundByNameWidget(who);
           }
         },
       ),
     );
   }
-
-  
 }

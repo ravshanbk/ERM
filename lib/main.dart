@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/models/creteria_model.dart';
@@ -10,6 +9,7 @@ import 'package:roxcrm/providers/criteria/criteria_add_provider.dart';
 import 'package:roxcrm/providers/criteria/criteria_edit_provider.dart';
 import 'package:roxcrm/providers/employee/employee_add_provider.dart';
 import 'package:roxcrm/providers/employee/employee_edit_page_provider.dart';
+import 'package:roxcrm/providers/employee/get_employee_result_interval_provider.dart';
 import 'package:roxcrm/providers/homepage_provider.dart';
 import 'package:roxcrm/routes.dart';
 
@@ -46,6 +46,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => EmployeeAddPageProvider(),
+        ),
+          ChangeNotifierProvider(
+          create: (_) => GetEmployeeResultIntervalProvider(),
         ),
       ],
       child: const MyApp(),

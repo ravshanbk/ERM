@@ -61,7 +61,6 @@ class CheckingPage extends StatelessWidget {
       actions: [
         SubmitButtonForAppBar(
           onPressed: () async {
-            debugPrint("Generation Complere");
 
             try {
 ////////////////////////////////////////
@@ -79,7 +78,6 @@ class CheckingPage extends StatelessWidget {
                       .criteries[__],
                 );
               });
-              debugPrint("result: "+result[0].letter!);
 ///////////////////////////////////////////////
               await ResultService()
                   .postResult(

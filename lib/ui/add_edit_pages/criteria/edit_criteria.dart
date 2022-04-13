@@ -105,7 +105,6 @@ class EditCriteriaPage extends StatelessWidget {
             .formKey
             .currentState!
             .validate()) {
-          debugPrint("Edit Criteria Bosildi");
 
           await Hive.openBox<Criteria>("criteria");
 
@@ -119,7 +118,6 @@ class EditCriteriaPage extends StatelessWidget {
             Navigator.pop(context);
           });
         } else {
-          debugPrint("Validation Failed");
         }
       },
     );

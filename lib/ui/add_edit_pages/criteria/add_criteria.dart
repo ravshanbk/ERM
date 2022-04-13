@@ -106,7 +106,6 @@ class AddCriteriaPage extends StatelessWidget {
             .formKey
             .currentState!
             .validate()) {
-          debugPrint("Validation Succed");
 
           await Hive.openBox<Criteria>("criteria");
 
@@ -128,7 +127,6 @@ class AddCriteriaPage extends StatelessWidget {
             Navigator.pop(context);
           });
         } else {
-          debugPrint("Validation Failed");
         }
       },
     );

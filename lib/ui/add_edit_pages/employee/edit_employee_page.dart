@@ -19,7 +19,6 @@ class EditEmployeePage extends StatelessWidget {
         actions: [
           SubmitButtonForAppBar(
             onPressed: () async {
-              debugPrint("Submit funksiyaga kirdi::::");
               if (Provider.of<EmployeeEditingPageProvider>(context,
                       listen: false)
                   .formKey
@@ -41,7 +40,6 @@ class EditEmployeePage extends StatelessWidget {
                             listen: false)
                         .phoneNumberController
                         .text);
-                debugPrint("Submit funksiyaga Chiqdi::::");
                 Navigator.pop(context);
               }
             },

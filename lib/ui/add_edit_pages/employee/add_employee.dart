@@ -118,7 +118,6 @@ class AddEmployeePage extends StatelessWidget {
             .formKey
             .currentState!
             .validate()) {
-          debugPrint("Validation Succed");
 
           await Hive.openBox<Employee>("employee");
 

@@ -4,11 +4,9 @@ import 'package:roxcrm/ui/add_edit_pages/criteria/edit_criteria.dart';
 import 'package:roxcrm/ui/add_edit_pages/employee/add_employee.dart';
 import 'package:roxcrm/ui/add_edit_pages/employee/edit_employee_page.dart';
 import 'package:roxcrm/ui/body_page.dart';
-import 'package:roxcrm/ui/checking_page.dart';
 import 'package:roxcrm/ui/settings/criteria_settings.dart';
 import 'package:roxcrm/ui/settings/employee_settings.dart';
 import 'package:roxcrm/ui/settings_page.dart';
-import 'package:roxcrm/ui/show_result_since_page.dart';
 
 class RouteManager {
   static generaRouter(RouteSettings settings) {

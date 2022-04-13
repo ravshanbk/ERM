@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
-import 'package:roxcrm/main.dart';
 import 'package:roxcrm/ui/widgets/bordered_button.dart';
 
 class SettingsPage extends StatelessWidget {
