@@ -3,6 +3,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/models/creteria_model.dart';
 import 'package:roxcrm/models/employee_model.dart';
+import 'package:roxcrm/models/user_hive_model.dart';
+import 'package:roxcrm/providers/auth/sign_in_provider.dart';
+import 'package:roxcrm/providers/auth/sign_up_provider.dart';
 import 'package:roxcrm/providers/bottom_nav_bar_provider.dart';
 import 'package:roxcrm/providers/checking_provider.dart';
 import 'package:roxcrm/providers/criteria/criteria_add_provider.dart';
@@ -20,10 +23,10 @@ void main() async {
   await Hive.openBox<Criteria>("criteria");
   Hive.registerAdapter(EmployeeAdapter());
   await Hive.openBox<Employee>("employee");
+ Hive.registerAdapter(UserHiveAdapter());
+  await Hive.openBox<UserHive>("user_hive");
 
   runApp(
-    /// Providers are above [MyApp] instead of inside it, so that tests
-    /// can use [MyApp] while mocking the providers
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -50,6 +53,13 @@ void main() async {
           ChangeNotifierProvider(
           create: (_) => GetEmployeeResultIntervalProvider(),
         ),
+         
+         ChangeNotifierProvider(
+          create: (_) => SignUpProvider(),
+        ),
+          ChangeNotifierProvider(
+          create: (_) => SignInProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -59,7 +69,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

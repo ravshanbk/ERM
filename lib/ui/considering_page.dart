@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
+import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/models/dfms_model.dart';
 
 import 'package:roxcrm/providers/employee/get_employee_result_interval_provider.dart';
-import 'package:roxcrm/ui/show_result_all_by_name_page.dart';
-import 'package:roxcrm/ui/show_result_interval_page.dart';
-import 'package:roxcrm/ui/show_result_since_page.dart';
+import 'package:roxcrm/ui/show/show_result_all_by_name_page.dart';
+import 'package:roxcrm/ui/show/show_result_interval_page.dart';
+import 'package:roxcrm/ui/show/show_result_since_page.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class ConsideringPage extends StatelessWidget {
@@ -65,7 +66,7 @@ class ConsideringPage extends StatelessWidget {
 
                         break;
 
-                      case 3:
+                      case 2:
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -272,7 +273,7 @@ class ConsideringPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    _showToast(
+                    showToast(
                         '"...dan" va "...gacha" lar ikkalasi ham kiritilishi lozim. Kiritish uchun ustiga bosing.');
                   }
                 },
@@ -319,14 +320,5 @@ class ConsideringPage extends StatelessWidget {
     );
   }
 
-  _showToast(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 26.0);
-  }
+ 
 }

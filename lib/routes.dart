@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/ui/add_edit_pages/criteria/add_criteria.dart';
 import 'package:roxcrm/ui/add_edit_pages/criteria/edit_criteria.dart';
 import 'package:roxcrm/ui/add_edit_pages/employee/add_employee.dart';
 import 'package:roxcrm/ui/add_edit_pages/employee/edit_employee_page.dart';
+import 'package:roxcrm/ui/auth/sign_in_page.dart';
 import 'package:roxcrm/ui/body_page.dart';
 import 'package:roxcrm/ui/settings/criteria_settings.dart';
 import 'package:roxcrm/ui/settings/employee_settings.dart';
@@ -13,8 +15,11 @@ class RouteManager {
     var args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const  BodyPage());
-         case "/settings":
+        return MaterialPageRoute(
+            builder: (_) => Boxes.getUserHive().values.isEmpty
+                ? const SignInPage()
+                : const BodyPage());
+      case "/settings":
         return MaterialPageRoute(builder: (_) => const SettingsPage());
       case "/criterias":
         return MaterialPageRoute(builder: (_) => const CriteriaSettingsPage());

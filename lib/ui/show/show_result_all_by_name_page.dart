@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/models/result_model.dart';
-import 'package:roxcrm/services/post_result_service.dart';
+import 'package:roxcrm/services/result_service.dart';
 import 'package:roxcrm/ui/widgets/no_data_found_by_name_widget.dart';
 import 'package:roxcrm/ui/widgets/show_result_widget.dart';
 
-class ShowResultSincePage extends StatelessWidget {
-  final int days;
+class ShowResultAllByNamePage extends StatelessWidget {
   final String who;
 
-  const ShowResultSincePage({required this.days, required this.who, Key? key})
+  const ShowResultAllByNamePage({required this.who, Key? key})
       : super(key: key);
 
   @override
@@ -20,13 +19,12 @@ class ShowResultSincePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("uuuwho"),
+        title: Text(who),
         backgroundColor: mainColor,
         elevation: 0,
       ),
       body: FutureBuilder(
-        future: ResultService()
-            .getResultsSince(DateTime.now().add(Duration(days: days)), who),
+        future: ResultService().getResultAllByName(who),
         builder: (context, AsyncSnapshot<List<Result>> snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return Center(
@@ -35,8 +33,8 @@ class ShowResultSincePage extends StatelessWidget {
               ),
             );
           } else if (snap.connectionState == ConnectionState.done &&
-              snap.hasData) {
-            return ShowResultWidget(snap.data!);
+              snap.data!.isNotEmpty) {
+             return ShowResultWidget(snap.data!);
           } else {
             return NoDataFoundByNameWidget(who);
           }
@@ -44,4 +42,6 @@ class ShowResultSincePage extends StatelessWidget {
       ),
     );
   }
+
+  
 }

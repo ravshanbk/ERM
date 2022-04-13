@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
+import 'package:roxcrm/hive/boxes.dart';
+import 'package:roxcrm/hive/userhive_hive.dart';
 import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/providers/bottom_nav_bar_provider.dart';
 import 'package:roxcrm/ui/home_page.dart';
@@ -18,7 +20,8 @@ class BodyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
+    // UserHiveHive().deleteAll();
+
     SizeConfig().init(context);
     return Scaffold(
         appBar: _appBar(),

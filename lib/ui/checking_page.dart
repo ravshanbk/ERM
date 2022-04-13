@@ -8,7 +8,11 @@ import 'package:roxcrm/models/creteria_model.dart';
 import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/models/result_model.dart';
 import 'package:roxcrm/providers/checking_provider.dart';
-import 'package:roxcrm/services/post_result_service.dart';
+import 'package:roxcrm/services/result_service.dart';
+import 'package:roxcrm/ui/add_edit_pages/criteria/add_criteria.dart';
+import 'package:roxcrm/ui/settings/criteria_settings.dart';
+import 'package:roxcrm/ui/widgets/add_button.dart';
+import 'package:roxcrm/ui/widgets/bordered_button.dart';
 import 'package:roxcrm/ui/widgets/submit_button_for_appbar.dart';
 
 class CheckingPage extends StatelessWidget {
@@ -26,12 +30,7 @@ class CheckingPage extends StatelessWidget {
           final List<Criteria> data = box.values.cast<Criteria>().toList();
 
           return data.isEmpty
-              ? Center(
-                  child: Text(
-                    "Birorta Ham Mezon Yo'q. Sozlamalar bo'limiga o'tib mezon qo'shing1",
-                    style: TextStyle(color: mainColor),
-                  ),
-                )
+              ? _noDataWidget(context)
               : Padding(
                   padding: EdgeInsets.symmetric(horizontal: gW(25.0)),
                   child: ListView.separated(
@@ -53,6 +52,36 @@ class CheckingPage extends StatelessWidget {
     );
   }
 
+  Center _noDataWidget(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Birorta Ham Mezon Mavjud Emas. Sozlamalar Bo'limiga O'tib Mezon Qo'shing !",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: mainColor, fontSize: gW(22.0)),
+            ),
+            SizedBox(height: gH(20.0)),
+            AddButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CriteriaSettingsPage(),
+                  ),
+                );
+              },
+              label: "O'tish",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   AppBar _appBar(BuildContext context) {
     return AppBar(
       elevation: 0,
@@ -60,8 +89,7 @@ class CheckingPage extends StatelessWidget {
       title: Text(employeeName),
       actions: [
         SubmitButtonForAppBar(
-          onPressed: () async {
-
+          onPressed: ()  {
             try {
 ////////////////////////////////////////
               List<Criteria> criterias =
@@ -72,14 +100,13 @@ class CheckingPage extends StatelessWidget {
                   (__) {
                 return ResultElement(
                   letter: criterias[__].criteriaLetter,
-
                   context: criterias[__].criteriaText,
                   done: Provider.of<CheckingProvider>(context, listen: false)
                       .criteries[__],
                 );
               });
 ///////////////////////////////////////////////
-              await ResultService()
+               ResultService()
                   .postResult(
                 Result(
                   result: result,
