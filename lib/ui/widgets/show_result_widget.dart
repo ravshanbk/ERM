@@ -10,6 +10,7 @@ class ShowResultWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      reverse: true,
       padding: EdgeInsets.all(gW(20.0)),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

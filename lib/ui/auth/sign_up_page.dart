@@ -28,11 +28,10 @@ class _SignUpPageState extends State<SignUpPage> {
     ];
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         backgroundColor: mainColor,
         elevation: 0,
         title: Text(
-          "E.R.M",
+          "Sign Up...",
           style: TextStyle(letterSpacing: gW(5.0)),
         ),
         actions: [
@@ -66,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SignInPage()),
+                              builder: (context) =>const  SignInPage()),
                           (route) => false);
                     } else {
                       showToast(
