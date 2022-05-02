@@ -12,6 +12,7 @@ import 'package:roxcrm/ui/settings_page.dart';
 
 class RouteManager {
   static generaRouter(RouteSettings settings) {
+    // ignore: unused_local_variable
     var args = settings.arguments;
     switch (settings.name) {
       case '/':
@@ -21,6 +22,9 @@ class RouteManager {
                 : const BodyPage());
       case "/settings":
         return MaterialPageRoute(builder: (_) => const SettingsPage());
+         case "/body":
+        return MaterialPageRoute(builder: (_) => const BodyPage());
+    
       case "/criterias":
         return MaterialPageRoute(builder: (_) => const CriteriaSettingsPage());
       case "/employee":

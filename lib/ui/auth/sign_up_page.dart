@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
+import 'package:roxcrm/models/user_model.dart';
+// import 'package:roxcrm/providers/auth/sign_in_provider.dart';
 import 'package:roxcrm/providers/auth/sign_up_provider.dart';
 import 'package:roxcrm/services/user_service.dart';
 import 'package:roxcrm/ui/auth/sign_in_page.dart';
@@ -35,7 +37,10 @@ class _SignUpPageState extends State<SignUpPage> {
           style: TextStyle(letterSpacing: gW(5.0)),
         ),
         actions: [
-          SubmitButtonForAppBar(onPressed: () async {
+          SubmitButtonForAppBar(context.watch<SignUpProvider>().isInProgress,
+              onPressed: () async {
+            Provider.of<SignUpProvider>(context, listen: false)
+                .changeIsInProgress(true);
             if (Provider.of<SignUpProvider>(context, listen: false)
                 .formKey
                 .currentState!
@@ -54,22 +59,31 @@ class _SignUpPageState extends State<SignUpPage> {
                             .text,
                         isAdmin)
                     .then(
-                  (value) {
-                    if (value.name ==
+                  (User value) {
+                    debugPrint("bbbbb: " +
+                        (value.email ==
+                                Provider.of<SignUpProvider>(context,
+                                        listen: false)
+                                    .controllers[1]
+                                    .text)
+                            .toString());
+                    if (value.email ==
                         Provider.of<SignUpProvider>(context, listen: false)
-                            .controllers[0]
+                            .controllers[1]
                             .text) {
                       Provider.of<SignUpProvider>(context, listen: false)
                           .clear();
-
+                      Provider.of<SignUpProvider>(context, listen: false)
+                          .changeIsInProgress(false);
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>const  SignInPage()),
+                              builder: (context) => const SignInPage()),
                           (route) => false);
                     } else {
-                      showToast(
-                          "Nimadir Xato: Internet Yaxshi Bolmasligidan bo'lishi ham mumkin");
+                      Provider.of<SignUpProvider>(context, listen: false)
+                          .changeIsInProgress(false);
+                      showToast("${value.email}");
                       Provider.of<SignUpProvider>(context, listen: false)
                           .clear();
                       isAdmin = false;
@@ -88,7 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
       body: Form(
-        key: context.watch<SignUpProvider>().formKey,
+        key: Provider.of<SignUpProvider>(context,listen: false).formKey,
         child: Column(
           children: [
             Column(
@@ -131,4 +145,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-

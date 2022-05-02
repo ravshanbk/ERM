@@ -100,7 +100,7 @@ class AddCriteriaPage extends StatelessWidget {
   }
 
   _submitButton(BuildContext context) {
-    return SubmitButtonForAppBar(
+    return SubmitButtonForAppBar(context.watch<CriteriaAddPageProvider>().isInProgress,
       onPressed: () async {
         if (Provider.of<CriteriaAddPageProvider>(context, listen: false)
             .formKey

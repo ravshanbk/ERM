@@ -9,10 +9,8 @@ import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/models/result_model.dart';
 import 'package:roxcrm/providers/checking_provider.dart';
 import 'package:roxcrm/services/result_service.dart';
-import 'package:roxcrm/ui/add_edit_pages/criteria/add_criteria.dart';
 import 'package:roxcrm/ui/settings/criteria_settings.dart';
 import 'package:roxcrm/ui/widgets/add_button.dart';
-import 'package:roxcrm/ui/widgets/bordered_button.dart';
 import 'package:roxcrm/ui/widgets/submit_button_for_appbar.dart';
 
 class CheckingPage extends StatelessWidget {
@@ -22,32 +20,39 @@ class CheckingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(context),
-      body: ValueListenableBuilder<Box<Criteria>>(
-        valueListenable: Boxes.getCriterias().listenable(),
-        builder: (context, box, __) {
-          final List<Criteria> data = box.values.cast<Criteria>().toList();
+    return WillPopScope(
+      onWillPop: () {
+       Provider.of<CheckingProvider>(context,listen: false).changeIsInProgress(false);
+        Provider.of<CheckingProvider>(context, listen: false).clearCriterias();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: _appBar(context),
+        body: ValueListenableBuilder<Box<Criteria>>(
+          valueListenable: Boxes.getCriterias().listenable(),
+          builder: (context, box, __) {
+            final List<Criteria> data = box.values.cast<Criteria>().toList();
 
-          return data.isEmpty
-              ? _noDataWidget(context)
-              : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: gW(25.0)),
-                  child: ListView.separated(
-                      padding: EdgeInsets.only(top: gW(20.0)),
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (_, __) {
-                        return _viewChild(context, data[__], __);
-                      },
-                      separatorBuilder: (_, __) {
-                        return SizedBox(
-                          height: gH(20.0),
-                        );
-                      },
-                      itemCount: data.length),
-                );
-        },
+            return data.isEmpty
+                ? _noDataWidget(context)
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: gW(25.0)),
+                    child: ListView.separated(
+                        padding: EdgeInsets.only(top: gW(20.0)),
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (_, __) {
+                          return _viewChild(context, data[__], __);
+                        },
+                        separatorBuilder: (_, __) {
+                          return SizedBox(
+                            height: gH(20.0),
+                          );
+                        },
+                        itemCount: data.length),
+                  );
+          },
+        ),
       ),
     );
   }
@@ -89,7 +94,9 @@ class CheckingPage extends StatelessWidget {
       title: Text(employeeName),
       actions: [
         SubmitButtonForAppBar(
-          onPressed: ()  {
+          context.watch<CheckingProvider>().isInProgress,
+          onPressed: () async {
+           Provider.of<CheckingProvider>(context,listen: false).changeIsInProgress(true);
             try {
 ////////////////////////////////////////
               List<Criteria> criterias =
@@ -106,7 +113,7 @@ class CheckingPage extends StatelessWidget {
                 );
               });
 ///////////////////////////////////////////////
-               ResultService()
+              ResultService()
                   .postResult(
                 Result(
                   result: result,
@@ -121,6 +128,8 @@ class CheckingPage extends StatelessWidget {
                   );
                   Navigator.pop(context);
                 } else {
+       Provider.of<CheckingProvider>(context,listen: false).changeIsInProgress(false);
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     _snakBar(false),
                   );

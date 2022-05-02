@@ -112,7 +112,7 @@ class AddEmployeePage extends StatelessWidget {
   }
 
   _submitButton(BuildContext context) {
-    return SubmitButtonForAppBar(
+    return SubmitButtonForAppBar(context.watch<EmployeeAddPageProvider>().isInProgress,
       onPressed: () async {
         if (Provider.of<EmployeeAddPageProvider>(context, listen: false)
             .formKey

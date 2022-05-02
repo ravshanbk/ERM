@@ -12,6 +12,11 @@ class SignUpProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+   bool isInProgress = false;
+  changeIsInProgress(bool v) {
+    isInProgress = v;
+    notifyListeners();
+  }
 }
 class JosKeys {
   static final josKeys1 = GlobalKey<FormState>();

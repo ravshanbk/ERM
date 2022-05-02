@@ -5,15 +5,13 @@ import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/models/result_model.dart';
 
 class ResultService {
-  // static String localhost = "192.168.1.29";
-  static String localhost = "192.168.1.6";
+ 
   String token = Boxes.getUserHive().getAt(0)!.authToken;
 
   Future<bool> postResult(Result data) async {
     debugPrint("PostResult: " + token);
     try {
-      Response res = await Dio().post(
-          Secret.api_criteria,
+      Response res = await Dio().post(Secret.api_criteria,
           data: data,
           options: Options(
               headers: {"x-auth-token": token.substring(1, token.length - 1)}));
@@ -57,8 +55,7 @@ class ResultService {
 
   Future<List<Result>> getResultAll() async {
     try {
-      Response res = await Dio().get(
-          "${Secret.api_criteria}/all",
+      Response res = await Dio().get("${Secret.api_criteria}/all",
           options: Options(
               headers: {"x-auth-token": token.substring(1, token.length - 1)}));
 

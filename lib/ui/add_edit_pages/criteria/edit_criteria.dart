@@ -99,7 +99,7 @@ class EditCriteriaPage extends StatelessWidget {
   }
 
   _submitButton(BuildContext context) {
-    return SubmitButtonForAppBar(
+    return SubmitButtonForAppBar(context.watch<CriteriaEditingPageProvider>().isInProgress,
       onPressed: () async {
         if (Provider.of<CriteriaEditingPageProvider>(context, listen: false)
             .formKey

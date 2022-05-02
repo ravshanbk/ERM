@@ -19,4 +19,10 @@ class CheckingProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  bool isInProgress = false;
+  changeIsInProgress(bool v) {
+    isInProgress = v;
+    notifyListeners();
+  }
 }

@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:roxcrm/config/env.dart';
 import 'package:roxcrm/hive/userhive_hive.dart';
 import 'package:roxcrm/models/user_model.dart';
 
 class UserService {
-  static String localhost = "192.168.1.6";
-
   Future<User> signUpUser(
       String name, String email, String parol, bool isAdmin) async {
     try {
       Response res = await Dio().post(
-        "http://$localhost:5000/api/users",
+        Secret.api_user,
         data: {
           "name": name,
           "email": email,
@@ -18,9 +17,15 @@ class UserService {
           "isAdmin": isAdmin
         },
       );
-      return User.fromJson(res.data);
+      debugPrint("StatusMessage: "+res.statusMessage.toString());
+      debugPrint("StatusMessage: "+res.statusCode.toString());
+      if (res.statusCode == 201) {
+        return User.fromJson(res.data);
+      } else {
+        return User(email: res.data.toString());
+      }
     } catch (e) {
-      throw Exception("UserService signUpUser: " + e.toString());
+      return User(email: "Mavjud bo'lgan foydalanuvchi");
     }
   }
 
@@ -30,7 +35,7 @@ class UserService {
   ) async {
     try {
       Response res = await Dio().post(
-        "http://$localhost:5000/api/auth/user",
+        Secret.api_auth,
         data: {
           "email": email,
           "password": parol,

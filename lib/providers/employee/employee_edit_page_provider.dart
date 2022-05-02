@@ -15,4 +15,9 @@ class EmployeeEditingPageProvider extends ChangeNotifier {
     phoneNumberController.text = phone;
     notifyListeners();
   }
+   bool isInProgress = false;
+  changeIsInProgress(bool v) {
+    isInProgress = v;
+    notifyListeners();
+  }
 }

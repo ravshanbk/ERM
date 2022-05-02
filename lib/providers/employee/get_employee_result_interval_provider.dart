@@ -35,4 +35,9 @@ class GetEmployeeResultIntervalProvider extends ChangeNotifier {
     from = date;
     notifyListeners();
   }
+   bool isInProgress = false;
+  changeIsInProgress(bool v) {
+    isInProgress = v;
+    notifyListeners();
+  }
 }

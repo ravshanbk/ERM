@@ -17,7 +17,7 @@ class EditEmployeePage extends StatelessWidget {
         elevation: 0,
         title: const Text("Xodim ismi"),
         actions: [
-          SubmitButtonForAppBar(
+          SubmitButtonForAppBar(context.watch<EmployeeEditingPageProvider>().isInProgress,
             onPressed: () async {
               if (Provider.of<EmployeeEditingPageProvider>(context,
                       listen: false)

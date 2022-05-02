@@ -6,7 +6,6 @@ import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/providers/auth/sign_in_provider.dart';
 import 'package:roxcrm/services/user_service.dart';
 import 'package:roxcrm/ui/auth/sign_up_page.dart';
-import 'package:roxcrm/ui/body_page.dart';
 import 'package:roxcrm/ui/widgets/submit_button_for_appbar.dart';
 
 class SignInPage extends StatelessWidget {
@@ -18,7 +17,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
       appBar: _appBar(context),
       body: Form(
-        key: context.watch<SignInProvider>().formKey,
+        key: Provider.of<SignInProvider>(context, listen: false).formKey,
         child: Padding(
           padding: EdgeInsets.all(gW(20.0)),
           child: Column(
@@ -81,7 +80,10 @@ class SignInPage extends StatelessWidget {
         style: TextStyle(letterSpacing: gW(5.0)),
       ),
       actions: [
-        SubmitButtonForAppBar(onPressed: () async {
+        SubmitButtonForAppBar(context.watch<SignInProvider>().isInProgress,
+            onPressed: () async {
+          Provider.of<SignInProvider>(context, listen: false)
+              .changeIsInProgress(true);
           if (Provider.of<SignInProvider>(context, listen: false)
               .formKey
               .currentState!
@@ -96,12 +98,14 @@ class SignInPage extends StatelessWidget {
                       .text);
 
               if (success) {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const BodyPage()),
-                    (route) => false);
+                Provider.of<SignInProvider>(context, listen: false)
+                    .changeIsInProgress(false);
+
+              Navigator.pushNamedAndRemoveUntil(context, '/body', ModalRoute.withName('/'));
               } else {
                 showToast("Nimadir Xato bo'ldi. Qaytadan urunib ko'ring");
+                Provider.of<SignInProvider>(context, listen: false)
+                    .changeIsInProgress(false);
               }
             } catch (e) {
               throw Exception("SignInPage SubmitButtton: " + e.toString());

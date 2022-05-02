@@ -12,4 +12,9 @@ class EmployeeAddPageProvider extends ChangeNotifier {
     phoneNumberController.clear();
     notifyListeners();
   }
+   bool isInProgress = false;
+  changeIsInProgress(bool v) {
+    isInProgress = v;
+    notifyListeners();
+  }
 }

@@ -15,7 +15,7 @@ import 'package:roxcrm/providers/employee/employee_edit_page_provider.dart';
 import 'package:roxcrm/providers/employee/get_employee_result_interval_provider.dart';
 import 'package:roxcrm/providers/homepage_provider.dart';
 import 'package:roxcrm/routes.dart';
-
+// flutter build apk --build-name=1.0 --build-number=1
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
