@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
-import 'package:roxcrm/models/user_model.dart';
-// import 'package:roxcrm/providers/auth/sign_in_provider.dart';
+import 'package:roxcrm/models/user/sign_up_user_model.dart';
 import 'package:roxcrm/providers/auth/sign_up_provider.dart';
 import 'package:roxcrm/services/user_service.dart';
 import 'package:roxcrm/ui/auth/sign_in_page.dart';
@@ -59,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             .text,
                         isAdmin)
                     .then(
-                  (User value) {
+                  (SignUpUser value) {
                     debugPrint("bbbbb: " +
                         (value.email ==
                                 Provider.of<SignUpProvider>(context,
@@ -102,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
       body: Form(
-        key: Provider.of<SignUpProvider>(context,listen: false).formKey,
+        key: Provider.of<SignUpProvider>(context, listen: false).formKey,
         child: Column(
           children: [
             Column(

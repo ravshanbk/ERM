@@ -2,10 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:roxcrm/config/env.dart';
 import 'package:roxcrm/hive/userhive_hive.dart';
-import 'package:roxcrm/models/user_model.dart';
+import 'package:roxcrm/models/user/sign_up_user_model.dart';
+import 'package:roxcrm/pppp.dart';
 
 class UserService {
-  Future<User> signUpUser(
+  Future<SignUpUser> signUpUser(
       String name, String email, String parol, bool isAdmin) async {
     try {
       Response res = await Dio().post(
@@ -17,15 +18,15 @@ class UserService {
           "isAdmin": isAdmin
         },
       );
-      debugPrint("StatusMessage: "+res.statusMessage.toString());
-      debugPrint("StatusMessage: "+res.statusCode.toString());
+      debugPrint("StatusMessage: " + res.statusMessage.toString());
+      debugPrint("StatusMessage: " + res.statusCode.toString());
       if (res.statusCode == 201) {
-        return User.fromJson(res.data);
+        return SignUpUser.fromJson(res.data);
       } else {
-        return User(email: res.data.toString());
+        return SignUpUser(email: res.data.toString());
       }
     } catch (e) {
-      return User(email: "Mavjud bo'lgan foydalanuvchi");
+      return SignUpUser(email: "Mavjud bo'lgan foydalanuvchi");
     }
   }
 
@@ -48,7 +49,9 @@ class UserService {
       } else {
         return false;
       }
-    } catch (e) {
+    } on DioError catch (e) {
+      p(e.response!.data);
+
       throw Exception("UserService signInUser: " + e.toString());
     }
   }

@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/models/creteria_model.dart';
 import 'package:roxcrm/models/employee_model.dart';
-import 'package:roxcrm/models/user_hive_model.dart';
+import 'package:roxcrm/models/user/user_hive_model.dart';
 import 'package:roxcrm/providers/auth/sign_in_provider.dart';
 import 'package:roxcrm/providers/auth/sign_up_provider.dart';
 import 'package:roxcrm/providers/bottom_nav_bar_provider.dart';

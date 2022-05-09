@@ -1,5 +1,5 @@
 import 'package:roxcrm/hive/boxes.dart';
-import 'package:roxcrm/models/user_hive_model.dart';
+import 'package:roxcrm/models/user/user_hive_model.dart';
 
 class UserHiveHive {
   authToken(
