@@ -12,7 +12,7 @@ A new Flutter project.
 
 This project is a mobile part of an automatization project of outsorce feeding kindergartens.
 
-- <a href="https://github.com/ravshanbk/governess_public_version/raw/master/app-release.apk" target="_blank"><img src="https://img.shields.io/badge/-download_apk-00a859?style=for-the-badge&logo=download&logoColor=107a8bF"></a>
+- <a href="https://github.com/ravshanbk/RoxERM/raw/master/app-release.apk" target="_blank"><img src="https://img.shields.io/badge/-download_apk-00a859?style=for-the-badge&logo=download&logoColor=107a8bF"></a>
 - [The project used provider for state managment](https://pub.dev/packages/provider)
 __________________________
 
