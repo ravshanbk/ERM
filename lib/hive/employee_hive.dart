@@ -12,7 +12,7 @@ class EmployeeHive {
       ..name = name
       ..age = age
       ..phoneNumber = phoneNumber
-      ..sellerId = sellerId;
+      ;
 
     final box = Boxes.getEmployee();
 

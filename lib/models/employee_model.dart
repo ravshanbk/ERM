@@ -13,6 +13,5 @@ class Employee extends HiveObject {
   @HiveField(2)
   late String phoneNumber;
 
-  @HiveField(3)
-  late String sellerId;
+  
 }

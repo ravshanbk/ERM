@@ -20,7 +20,7 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
       ..name = fields[0] as String
       ..age = fields[1] as String
       ..phoneNumber = fields[2] as String
-      ..sellerId = fields[3] as String;
+     ;
   }
 
   @override
@@ -33,8 +33,7 @@ class EmployeeAdapter extends TypeAdapter<Employee> {
       ..write(obj.age)
       ..writeByte(2)
       ..write(obj.phoneNumber)
-      ..writeByte(3)
-      ..write(obj.sellerId);
+      ;
   }
 
   @override
