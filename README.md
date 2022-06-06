@@ -12,7 +12,7 @@ A new Flutter project.
 
 This project is a android to do app, nodejs as server side and hosting on mongoDB deployment on heroku.
 
-- <a href="https://github.com/ravshanbk/RoxERM/raw/master/app-release.apk" target="_blank"><img src="https://img.shields.io/badge/-download_apk-A5CAD2?style=for-the-badge&logo=download&logoColor=107a8bF"></a>
+- <a href="https://github.com/ravshanbk/RoxERM/raw/master/app-release.apk" target="_blank"><img src="https://img.shields.io/badge/-download_apk-A5CAD2?style=for-the-badge&logo=download&logoColor=ffffff"></a>
 - [The project used provider for state managment and Hive as a local storage also Dio as a httpClient](https://pub.dev/packages/provider)
 __________________________
 
