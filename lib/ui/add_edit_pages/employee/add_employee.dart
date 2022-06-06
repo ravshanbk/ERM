@@ -27,16 +27,18 @@ class AddEmployeePage extends StatelessWidget {
           key: context.read<EmployeeAddPageProvider>().formKey,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: gW(20.0)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: gH(20.0)),
-                _nameInputField(context),
-                SizedBox(height: gH(20.0)),
-                _ageInputField(context),
-                SizedBox(height: gH(20.0)),
-                _phoneInputField(context),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: gH(20.0)),
+                  _nameInputField(context),
+                  SizedBox(height: gH(20.0)),
+                  _ageInputField(context),
+                  SizedBox(height: gH(20.0)),
+                  _phoneInputField(context),
+                ],
+              ),
             ),
           ),
         ),

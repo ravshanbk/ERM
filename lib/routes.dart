@@ -35,9 +35,9 @@ class RouteManager {
       case "/addEmployee":
         return MaterialPageRoute(builder: (_) => const AddEmployeePage());
       case "/addCriteria":
-        return MaterialPageRoute(builder: (_) => const AddCriteriaPage());
+        return MaterialPageRoute(builder: (_) => AddCriteriaPage());
       case "/editCriteria":
-        return MaterialPageRoute(builder: (_) => const EditCriteriaPage());
+        return MaterialPageRoute(builder: (_) =>  EditCriteriaPage());
     }
   }
 }

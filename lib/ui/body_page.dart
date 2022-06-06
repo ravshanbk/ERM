@@ -6,6 +6,7 @@ import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/providers/bottom_nav_bar_provider.dart';
 import 'package:roxcrm/ui/home_page.dart';
 import 'package:roxcrm/ui/settings_page.dart';
+import 'package:roxcrm/ui/widgets/drawer_widget.dart';
 
 class BodyPage extends StatelessWidget {
   const BodyPage({Key? key}) : super(key: key);
@@ -22,9 +23,12 @@ class BodyPage extends StatelessWidget {
 
     SizeConfig().init(context);
     return Scaffold(
+      drawer:const  DrawerWidgetMy(),
         appBar: _appBar(),
         backgroundColor: mainColor,
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: mainColor,
+           
           iconSize: gW(40.0),
           currentIndex: context.watch<BottomNavBarProvider>().currentIndex,
           onTap: (v) {

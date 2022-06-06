@@ -41,35 +41,32 @@ class _SignUpPageState extends State<SignUpPage> {
             Provider.of<SignUpProvider>(context, listen: false)
                 .changeIsInProgress(true);
             if (Provider.of<SignUpProvider>(context, listen: false)
-                .formKey
+                .formKey!
                 .currentState!
                 .validate()) {
               try {
                 UserService()
                     .signUpUser(
-                        Provider.of<SignUpProvider>(context, listen: false)
-                            .controllers[0]
-                            .text,
-                        Provider.of<SignUpProvider>(context, listen: false)
-                            .controllers[1]
-                            .text,
-                        Provider.of<SignUpProvider>(context, listen: false)
-                            .controllers[2]
-                            .text,
-                        isAdmin)
+                  UserToSignUp(
+                      email: Provider.of<SignUpProvider>(context, listen: false)
+                          .controllers[1]
+                          .text,
+                      isAdmin: isAdmin,
+                      name: Provider.of<SignUpProvider>(context, listen: false)
+                          .controllers[0]
+                          .text,
+                      password:
+                          Provider.of<SignUpProvider>(context, listen: false)
+                              .controllers[2]
+                              .text),
+                )
                     .then(
-                  (SignUpUser value) {
-                    debugPrint("bbbbb: " +
-                        (value.email ==
-                                Provider.of<SignUpProvider>(context,
-                                        listen: false)
-                                    .controllers[1]
-                                    .text)
-                            .toString());
+                  (SignedUpUser value) {
                     if (value.email ==
                         Provider.of<SignUpProvider>(context, listen: false)
                             .controllers[1]
                             .text) {
+                              
                       Provider.of<SignUpProvider>(context, listen: false)
                           .clear();
                       Provider.of<SignUpProvider>(context, listen: false)
@@ -93,6 +90,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 );
               } catch (e) {
+                Provider.of<SignUpProvider>(context, listen: false)
+                    .changeIsInProgress(false);
                 throw Exception(
                     "SubmitButtonForAppBar in SignUpPage: " + e.toString());
               }
@@ -101,31 +100,33 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
       body: Form(
-        key: Provider.of<SignUpProvider>(context, listen: false).formKey,
-        child: Column(
-          children: [
-            Column(
-              children: List.generate(
-                signUpItems.length,
-                (index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: gW(20.0), vertical: gH(10.0)),
-                    child: _textFormField(signUpItems, index, context),
-                  );
+        key: context.watch<SignUpProvider>().formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Column(
+                children: List.generate(
+                  signUpItems.length,
+                  (index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: gW(20.0), vertical: gH(10.0)),
+                      child: _textFormField(signUpItems, index, context),
+                    );
+                  },
+                ),
+              ),
+              CheckboxListTile(
+                selected: isAdmin,
+                title: const Text("Adminmisiz"),
+                value: isAdmin,
+                onChanged: (v) {
+                  isAdmin = !isAdmin;
+                  setState(() {});
                 },
               ),
-            ),
-            CheckboxListTile(
-              selected: isAdmin,
-              title: const Text("Adminmisiz"),
-              value: isAdmin,
-              onChanged: (v) {
-                isAdmin = !isAdmin;
-                setState(() {});
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

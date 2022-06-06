@@ -1,41 +1,33 @@
 import 'package:flutter/cupertino.dart';
-import 'package:roxcrm/models/dfms_model.dart';
 
 class GetEmployeeResultIntervalProvider extends ChangeNotifier {
-  bool collapsed = false;
-  changeCallapsed() {
-    collapsed = !collapsed;
+  bool expanded = false;
+  changeExpanded(bool v) {
+    expanded = v;
     notifyListeners();
   }
 
-  String stringFrom = '';
-  String stringTo = '';
-
-  DateTime from = DateTime.now();
-  DateTime to = DateTime.now();
+  DateTime? from;
+  DateTime? to;
 
   clear() {
-    collapsed = false;
-    stringFrom = "";
-    stringTo = "";
-    from = DateTime.now();
-    to = DateTime.now();
+   
+    from = null;
+    to = null;
     notifyListeners();
   }
 
   initTo(DateTime date) {
-    stringTo = DTFM.maker(date.millisecondsSinceEpoch);
     to = date;
     notifyListeners();
   }
 
   initFrom(DateTime date) {
-    stringFrom = DTFM.maker(date.millisecondsSinceEpoch);
-
     from = date;
     notifyListeners();
   }
-   bool isInProgress = false;
+
+  bool isInProgress = false;
   changeIsInProgress(bool v) {
     isInProgress = v;
     notifyListeners();

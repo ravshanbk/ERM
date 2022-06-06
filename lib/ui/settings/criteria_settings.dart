@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +64,7 @@ class CriteriaSettingsPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: gW(30.0),
                                 fontWeight: FontWeight.bold,
-                                color:redColor,
+                                color: redColor,
                               ),
                             ),
                           );
@@ -148,7 +150,8 @@ class CriteriaSettingsPage extends StatelessWidget {
   _leading(BuildContext context, letter, __) {
     return IconButtonMy(
       onPressed: () {
-        _showDialogReallyDelete(context, letter, __);
+        _showDialogReallyDelete(
+            context: context, letter: letter, index: __, isAll: false);
       },
       icon: Icons.delete_outline,
     );
@@ -171,7 +174,8 @@ class CriteriaSettingsPage extends StatelessWidget {
                 Navigator.pushNamed(context, "/addCriteria");
                 break;
               case "deleteAll":
-                CriteriaHive().deleteAll();
+                _showDialogReallyDelete(
+                    context: context, index: 0, isAll: true, letter: "");
                 break;
               case "getHome":
                 Navigator.pushNamedAndRemoveUntil(
@@ -235,107 +239,128 @@ class CriteriaSettingsPage extends StatelessWidget {
     );
   }
 
-  _showDialogReallyDelete(context, letter, __) {
+  _showDialogReallyDelete(
+      {required bool isAll,
+      required BuildContext context,
+      required String letter,
+      required int index}) {
     return showDialog(
       context: context,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(gW(20.0)),
-          margin: EdgeInsets.only(
-            left: gW(32.5),
-            right: gW(32.5),
-            top: gH(50.0),
-            bottom: gH(300.0),
-          ),
-          decoration: BoxDecoration(
-            color: mainColor,
-            borderRadius: BorderRadius.circular(
-              gW(15.0),
+        return Scaffold(
+          body: Container(
+            padding: EdgeInsets.all(gW(20.0)),
+            margin: EdgeInsets.only(
+              left: gW(32.5),
+              right: gW(32.5),
+              top: gH(50.0),
+              bottom: gH(300.0),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: letter,
-                      style: TextStyle(
-                        letterSpacing: 3.0,
-                        color: redColor,
-                        fontSize: gW(30),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " mezonini rostdan ham o'chirmoqchimisiz?",
-                      style: TextStyle(
-                        letterSpacing: 3.0,
-                        color: Colors.white,
-                        fontSize: gW(20.0),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
+            decoration: BoxDecoration(
+              color: mainColor,
+              borderRadius: BorderRadius.circular(
+                gW(15.0),
               ),
-              SizedBox(
-                width: gW(300.0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: redColor,
-                        elevation: 0,
-                        fixedSize: Size(
-                          gW(100.0),
-                          gH(48.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                isAll
+                    ? Text(
+                        "Hammasini o'chirmoqchiligingizga ishonchingiz komilmi?",textAlign: TextAlign.center,
+                        style: TextStyle(color: whiteColor, fontSize: gW(22.0)),
+                      )
+                    : _letterMessage(letter),
+                SizedBox(
+                  width: gW(300.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: redColor,
+                          elevation: 0,
+                          fixedSize: Size(
+                            gW(100.0),
+                            gH(48.0),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (isAll) {
+                            await CriteriaHive().deleteAll();
+                          } else {
+                            await CriteriaHive().deleteCriteria(index);
+                          }
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Ha",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: gW(25.0),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      onPressed: () async {
-                        await CriteriaHive().deleteCriteria(__);
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "Ha",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: gW(25.0),
-                          fontWeight: FontWeight.bold,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          elevation: 0,
+                          fixedSize: Size(
+                            gW(100.0),
+                            gH(48.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Yo'q",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: gW(25.0),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        elevation: 0,
-                        fixedSize: Size(
-                          gW(100.0),
-                          gH(48.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "Yo'q",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: gW(25.0),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
+    );
+  }
+
+  RichText _letterMessage(String letter) {
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: letter,
+            style: TextStyle(
+              letterSpacing: 3.0,
+              color: redColor,
+              fontSize: gW(30),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: " mezonini rostdan ham o'chirmoqchimisiz?",
+          
+            style: TextStyle(
+              letterSpacing: 3.0,
+              color: Colors.white,
+              fontSize: gW(20.0),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

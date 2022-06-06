@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
+import 'package:roxcrm/core/extentions_my.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/hive/employee_hive.dart';
@@ -57,7 +58,7 @@ class EmployeeSettingsPage extends StatelessWidget {
                             trailing: _trailing(context, data[__].name,
                                 data[__].age, data[__].phoneNumber,__),
                             title: Text(
-                              data[__].name,
+                              data[__].name.capitalize(),
                               style: TextStyle(
                                 fontSize: gW(20.0),
                                 fontWeight: FontWeight.bold,

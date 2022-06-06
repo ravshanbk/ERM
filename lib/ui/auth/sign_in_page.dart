@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
+import 'package:roxcrm/models/dfms_model.dart';
+import 'package:roxcrm/models/response_model.dart';
 import 'package:roxcrm/providers/auth/sign_in_provider.dart';
 import 'package:roxcrm/services/user_service.dart';
 import 'package:roxcrm/ui/auth/sign_up_page.dart';
@@ -13,8 +16,10 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     SizeConfig().init(context);
     return Scaffold(
+      resizeToAvoidBottomInset:true,
       appBar: _appBar(context),
       body: Form(
         key: Provider.of<SignInProvider>(context, listen: false).formKey,
@@ -23,6 +28,25 @@ class SignInPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              context.watch<SignInProvider>().isInProgress
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: mainColor,
+                              elevation: 0,
+                            ),
+                            onPressed: () {
+                              Provider.of<SignInProvider>(context,
+                                      listen: false)
+                                  .changeIsInProgress(false);
+                            },
+                            child: const Text("Bekor qilish")),
+                        const CupertinoActivityIndicator(),
+                      ],
+                    )
+                  : const SizedBox(),
               TextFormField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -32,6 +56,7 @@ class SignInPage extends StatelessWidget {
                 controller: context.watch<SignInProvider>().emailController,
                 validator: (v) {
                   if (v!.isEmpty) return "Emailingizni kiriting";
+                  return null;
                 },
               ),
               SizedBox(height: gH(20.0)),
@@ -80,38 +105,41 @@ class SignInPage extends StatelessWidget {
         style: TextStyle(letterSpacing: gW(5.0)),
       ),
       actions: [
-        SubmitButtonForAppBar(context.watch<SignInProvider>().isInProgress,
-            onPressed: () async {
-          Provider.of<SignInProvider>(context, listen: false)
-              .changeIsInProgress(true);
-          if (Provider.of<SignInProvider>(context, listen: false)
-              .formKey
-              .currentState!
-              .validate()) {
-            try {
-              bool success = await UserService().signInUser(
-                  Provider.of<SignInProvider>(context, listen: false)
-                      .emailController
-                      .text,
-                  Provider.of<SignInProvider>(context, listen: false)
-                      .passwordController
-                      .text);
-
-              if (success) {
-                Provider.of<SignInProvider>(context, listen: false)
-                    .changeIsInProgress(false);
-
-              Navigator.pushNamedAndRemoveUntil(context, '/body', ModalRoute.withName('/'));
-              } else {
-                showToast("Nimadir Xato bo'ldi. Qaytadan urunib ko'ring");
-                Provider.of<SignInProvider>(context, listen: false)
-                    .changeIsInProgress(false);
-              }
-            } catch (e) {
-              throw Exception("SignInPage SubmitButtton: " + e.toString());
+        SubmitButtonForAppBar(
+          context.watch<SignInProvider>().isInProgress,
+          onPressed: () async {
+            Provider.of<SignInProvider>(context, listen: false)
+                .changeIsInProgress(true);
+            if (Provider.of<SignInProvider>(context, listen: false)
+                .formKey
+                .currentState!
+                .validate()) {
+              UserService()
+                  .signInUser(
+                      Provider.of<SignInProvider>(context, listen: false)
+                          .emailController
+                          .text,
+                      Provider.of<SignInProvider>(context, listen: false)
+                          .passwordController
+                          .text)
+                  .then(
+                (value) {
+                  if (value.success) {
+                    showToast(value.text);
+                    Provider.of<SignInProvider>(context, listen: false)
+                        .changeIsInProgress(false);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/body', ModalRoute.withName('/'));
+                  } else {
+                    showToast(value.text);
+                    Provider.of<SignInProvider>(context, listen: false)
+                        .changeIsInProgress(false);
+                  }
+                },
+              );
             }
-          }
-        })
+          },
+        ),
       ],
     );
   }

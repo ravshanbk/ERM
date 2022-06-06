@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
+import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/models/result_model.dart';
 
 class ShowResultWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class ShowResultWidget extends StatelessWidget {
       reverse: true,
       padding: EdgeInsets.all(gW(20.0)),
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       itemBuilder: (_, __) {
         return Ink(
           decoration: BoxDecoration(
@@ -27,7 +28,7 @@ class ShowResultWidget extends StatelessWidget {
             textColor: Colors.black,
             backgroundColor: mainColor_02,
             title: Text(
-              data[__].when!,
+              DTFM.maker(data[__].when!),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: gW(25.0), fontWeight: FontWeight.bold),
             ),

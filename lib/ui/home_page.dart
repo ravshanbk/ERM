@@ -66,6 +66,7 @@ class MyHomePage extends StatelessWidget {
   Center _mainWidget(BuildContext context, List<Employee> data) {
     return Center(
       child: ListView.separated(
+        physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.all(gW(20.0)),
         separatorBuilder: (_, __) {
           return SizedBox(
@@ -137,7 +138,7 @@ class MyHomePage extends StatelessWidget {
             children: [
               Text(
                 data[__].name.length > 9
-                    ? data[__].name.capitalize().substring(0, 8) + "..."
+                    ? data[__].name.capitalize().substring(0, 7) + ".."
                     : data[__].name.capitalize(),
                 style: TextStyle(color: Colors.white, fontSize: gW(38.0)),
               ),
@@ -153,5 +154,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
-

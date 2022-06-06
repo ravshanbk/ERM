@@ -1,20 +1,25 @@
 import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/models/user/user_hive_model.dart';
 
-class UserHiveHive {
-  authToken(
-    String authToken,
-  ) {
-    final token = UserHive()..authToken = authToken;
+class UserHiveService {
+  saveUser({
+    required String authToken,
+    required String name,
+    required String email,
+  }) {
+    final user = UserHive()
+      ..authToken = authToken
+      ..email = email
+      ..name = name;
 
     final box = Boxes.getUserHive();
     if (box.values.isNotEmpty) {
-      box.putAt(0, token);
+      box.putAt(0, user);
     } else {
-      box.add(token);
+      box.add(user);
     }
 
-    box.putAt(0, token);
+    box.putAt(0, user);
   }
 
   deleteAll() {

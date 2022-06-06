@@ -21,32 +21,35 @@ class ShowResultByNameInterval extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(who),
-        backgroundColor: mainColor,
-        elevation: 0,
-      ),
-      body: FutureBuilder(
-        future: ResultService().getResultByNameInterval(from, to, who),
-        builder: (context, AsyncSnapshot<List<Result>> snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CupertinoActivityIndicator(
-                radius: gW(50.0),
-              ),
-            );
-          } else if (snap.connectionState == ConnectionState.done &&
-              snap.data!.isNotEmpty) {
-            context.read<GetEmployeeResultIntervalProvider>().clear();
-            return ShowResultWidget(snap.data!);
-          } else {
-            context.read<GetEmployeeResultIntervalProvider>().clear();
+    return WillPopScope(
+      onWillPop: () {
+        Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
+            .clear();
 
-            return NoDataFoundByNameWidget(who);
-          }
-        },
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(who),
+          backgroundColor: mainColor,
+          elevation: 0,
+        ),
+        body: FutureBuilder(
+          future: ResultService()
+              .getResultByNameInterval(from: from, to: to, who: who),
+          builder: (context, AsyncSnapshot<List<Result>> snap) {
+            if (snap.connectionState == ConnectionState.done) {
+              if (snap.data!.isNotEmpty) {
+                return ShowResultWidget(snap.data!);
+              } else {
+                return NoDataFoundByNameWidget(who);
+              }
+            } else {
+              return Center(child: CupertinoActivityIndicator(radius: gW(20)));
+            }
+          },
+        ),
       ),
     );
   }

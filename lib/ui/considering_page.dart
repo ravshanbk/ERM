@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
-
+import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/providers/employee/get_employee_result_interval_provider.dart';
 import 'package:roxcrm/ui/show/show_result_all_by_name_page.dart';
 import 'package:roxcrm/ui/show/show_result_interval_page.dart';
@@ -13,9 +13,9 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 class ConsideringPage extends StatelessWidget {
   final String who;
   const ConsideringPage(this.who, {Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+   
     final List<String> considerings = [
       "OXIRGI BIR OY",
       "OXIRGI BIR HAFTA",
@@ -26,7 +26,7 @@ class ConsideringPage extends StatelessWidget {
         backgroundColor: mainColor,
         elevation: 0,
         title: Text(
-          who,
+         who,
         ),
       ),
       body: Column(
@@ -39,62 +39,45 @@ class ConsideringPage extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (_, __) {
               return ElevatedButton(
-                  onPressed: () {
-                    switch (__) {
-                      case 0:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ShowResultSincePage(days: -30, who: who),
-                          ),
-                        );
-
-                        break;
-                      case 1:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ShowResultSincePage(
-                              days: -7,
-                              who: who,
-                            ),
-                          ),
-                        );
-
-                        break;
-
-                      case 2:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ShowResultAllByNamePage(who: who)),
-                        );
-
-                        break;
-
-                      default:
-                        break;
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        gW(10.0),
-                      ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        switch (__) {
+                          case 0:
+                            return ShowResultSincePage(
+                                days: -30, who: who);
+                          case 1:
+                            return ShowResultSincePage(
+                                days: -7, who:who);
+                          case 2:
+                            return ShowResultAllByNamePage(who: who);
+                          default:
+                            return this;
+                        }
+                      },
                     ),
-                    primary: mainColor,
-                    elevation: 0,
-                    fixedSize: Size(
-                      gW(335.0),
-                      gH(62.0),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      gW(10.0),
                     ),
                   ),
-                  child: Text(
-                    considerings[__],
-                    style: TextStyle(fontSize: gW(25.0)),
-                  ));
+                  primary: mainColor,
+                  elevation: 0,
+                  fixedSize: Size(
+                    gW(335.0),
+                    gH(62.0),
+                  ),
+                ),
+                child: Text(
+                  considerings[__],
+                  style: TextStyle(fontSize: gW(25.0)),
+                ),
+              );
             },
             separatorBuilder: (context, index) {
               return SizedBox(
@@ -106,36 +89,31 @@ class ConsideringPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(horizontal: gW(20.0)),
             decoration: BoxDecoration(
-              color:
-                  context.watch<GetEmployeeResultIntervalProvider>().collapsed
-                      ? whiteColor
-                      : mainColor,
+              color: context.watch<GetEmployeeResultIntervalProvider>().expanded
+                  ? whiteColor
+                  : mainColor,
               borderRadius: BorderRadius.circular(
                 gW(10.0),
               ),
             ),
             child: ExpansionTile(
+           
+              iconColor: mainColor,
               collapsedIconColor: Colors.transparent,
               textColor: mainColor,
               collapsedTextColor: whiteColor,
               onExpansionChanged: (v) {
-                if (v) {
-                  Provider.of<GetEmployeeResultIntervalProvider>(context,
-                          listen: false)
-                      .changeCallapsed();
-                } else {
-                  Provider.of<GetEmployeeResultIntervalProvider>(context,
-                          listen: false)
-                      .changeCallapsed();
+                Provider.of<GetEmployeeResultIntervalProvider>(context,
+                        listen: false)
+                    .changeExpanded(v);
+                if (!v) {
                   Provider.of<GetEmployeeResultIntervalProvider>(context,
                           listen: false)
                       .clear();
                 }
               },
-              initiallyExpanded: Provider.of<GetEmployeeResultIntervalProvider>(
-                      context,
-                      listen: false)
-                  .collapsed,
+              initiallyExpanded:
+                  context.watch<GetEmployeeResultIntervalProvider>().expanded,
               children: [
                 Divider(
                   color: mainColor,
@@ -147,14 +125,16 @@ class ConsideringPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                          context
+                          DTFM.maker(context
                               .watch<GetEmployeeResultIntervalProvider>()
-                              .stringFrom,
+                              .from
+                              ?.millisecondsSinceEpoch),
                           style: TextStyle(fontSize: gW(18.0))),
                       Text(
-                        context
+                        DTFM.maker(context
                             .watch<GetEmployeeResultIntervalProvider>()
-                            .stringTo,
+                            .to
+                            ?.millisecondsSinceEpoch),
                         style: TextStyle(fontSize: gW(18.0)),
                       ),
                     ],
@@ -220,69 +200,67 @@ class ConsideringPage extends StatelessWidget {
 
   ElevatedButton _korishButton(BuildContext context) {
     return ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: mainColor,
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      gW(15.0),
-                    ),
-                  ),
-                  primary: (Provider.of<GetEmployeeResultIntervalProvider>(
-                                  context,
-                                  listen: false)
-                              .stringFrom
-                              .isNotEmpty &&
-                          Provider.of<GetEmployeeResultIntervalProvider>(
-                                  context,
-                                  listen: false)
-                              .stringTo
-                              .isNotEmpty)
-                      ? mainColor_02
-                      : Colors.grey.shade300,
-                  elevation: 0,
-                  fixedSize: Size(
-                    gW(335.0),
-                    gH(42.0),
-                  ),
-                ),
-                onPressed: () {
-                  if (Provider.of<GetEmployeeResultIntervalProvider>(context,
-                              listen: false)
-                          .stringFrom
-                          .isNotEmpty &&
-                      Provider.of<GetEmployeeResultIntervalProvider>(context,
-                              listen: false)
-                          .stringTo
-                          .isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ShowResultByNameInterval(
-                          from: context
-                              .watch<GetEmployeeResultIntervalProvider>()
-                              .from,
-                          to: context
-                              .watch<GetEmployeeResultIntervalProvider>()
-                              .to,
-                          who: who,
-                        ),
-                      ),
-                    );
-                  } else {
-                    showToast(
-                        '"...dan" va "...gacha" lar ikkalasi ham kiritilishi lozim. Kiritish uchun ustiga bosing.');
-                  }
-                },
-                child: Text(
-                  "Ko'rish",
-                  style: TextStyle(
-                      color: mainColor,
-                      fontSize: gW(18.0),
-                      letterSpacing: gW(5.0)),
-                ),
-              );
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: mainColor,
+          ),
+          borderRadius: BorderRadius.circular(
+            gW(15.0),
+          ),
+        ),
+        primary: (Provider.of<GetEmployeeResultIntervalProvider>(context,
+                            listen: false)
+                        .from !=
+                    null &&
+                Provider.of<GetEmployeeResultIntervalProvider>(context,
+                            listen: false)
+                        .to !=
+                    null)
+            ? mainColor_02
+            : Colors.grey.shade300,
+        elevation: 0,
+        fixedSize: Size(
+          gW(335.0),
+          gH(42.0),
+        ),
+      ),
+      onPressed: () {
+        if (Provider.of<GetEmployeeResultIntervalProvider>(context,
+                        listen: false)
+                    .from !=
+                null &&
+            Provider.of<GetEmployeeResultIntervalProvider>(context,
+                        listen: false)
+                    .to !=
+                null) {
+          Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
+              .changeExpanded(false);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShowResultByNameInterval(
+                from: Provider.of<GetEmployeeResultIntervalProvider>(context,
+                        listen: false)
+                    .from!,
+                to: Provider.of<GetEmployeeResultIntervalProvider>(context,
+                        listen: false)
+                    .to!,
+                who: who,
+              ),
+            ),
+          );
+        } else {
+          showToast(
+              '"...dan" va "...gacha" lar ikkalasi ham kiritilishi lozim. Kiritish uchun ustiga bosing.');
+        }
+      },
+      child: Text(
+        "Ko'rish",
+        style: TextStyle(
+            color: mainColor, fontSize: gW(18.0), letterSpacing: gW(5.0)),
+      ),
+    );
   }
 
   _showDataPicker(bool isFrom, BuildContext context) {
@@ -307,6 +285,8 @@ class ConsideringPage extends StatelessWidget {
           debugPrint(date.toString());
           Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
               .initFrom(date);
+          Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
+              .initTo(date);
         } else {
           Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
               .initTo(date);
@@ -314,9 +294,7 @@ class ConsideringPage extends StatelessWidget {
           debugPrint(date.toString());
         }
       },
-      locale: LocaleType.en,
+      locale: LocaleType.uz,
     );
   }
-
- 
 }

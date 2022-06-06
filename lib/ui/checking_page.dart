@@ -5,7 +5,6 @@ import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/models/creteria_model.dart';
-import 'package:roxcrm/models/dfms_model.dart';
 import 'package:roxcrm/models/result_model.dart';
 import 'package:roxcrm/providers/checking_provider.dart';
 import 'package:roxcrm/services/result_service.dart';
@@ -22,8 +21,11 @@ class CheckingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-       Provider.of<CheckingProvider>(context,listen: false).changeIsInProgress(false);
+        Provider.of<CheckingProvider>(context, listen: false)
+            .changeIsInProgress(false);
         Provider.of<CheckingProvider>(context, listen: false).clearCriterias();
+        Navigator.pop(context);
+
         return Future.value(true);
       },
       child: Scaffold(
@@ -96,15 +98,15 @@ class CheckingPage extends StatelessWidget {
         SubmitButtonForAppBar(
           context.watch<CheckingProvider>().isInProgress,
           onPressed: () async {
-           Provider.of<CheckingProvider>(context,listen: false).changeIsInProgress(true);
+            Provider.of<CheckingProvider>(context, listen: false)
+                .changeIsInProgress(true);
             try {
 ////////////////////////////////////////
               List<Criteria> criterias =
                   Boxes.getCriterias().values.cast<Criteria>().toList();
 
-              List<ResultElement> result = List.generate(
-                  Boxes.getCriterias().values.cast<Criteria>().toList().length,
-                  (__) {
+              List<ResultElement> result =
+                  List.generate(criterias.length, (__) {
                 return ResultElement(
                   letter: criterias[__].criteriaLetter,
                   context: criterias[__].criteriaText,
@@ -117,21 +119,28 @@ class CheckingPage extends StatelessWidget {
                   .postResult(
                 Result(
                   result: result,
-                  when: DTFM.maker(DateTime.now().millisecondsSinceEpoch),
+                  when: DateTime.now().millisecondsSinceEpoch,
                   who: employeeName,
                 ),
               )
                   .then((value) {
-                if (value) {
+                if (value.success) {
+                  Provider.of<CheckingProvider>(context, listen: false)
+                      .changeIsInProgress(false);
+
+                  Provider.of<CheckingProvider>(context, listen: false)
+                      .clearCriterias();
+
                   ScaffoldMessenger.of(context).showSnackBar(
-                    _snakBar(true),
+                    _snakBar(true, value.text),
                   );
                   Navigator.pop(context);
                 } else {
-       Provider.of<CheckingProvider>(context,listen: false).changeIsInProgress(false);
+                  Provider.of<CheckingProvider>(context, listen: false)
+                      .changeIsInProgress(false);
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                    _snakBar(false),
+                    _snakBar(false, value.text),
                   );
                 }
               });
@@ -144,7 +153,7 @@ class CheckingPage extends StatelessWidget {
     );
   }
 
-  SnackBar _snakBar(bool success) {
+  SnackBar _snakBar(bool success, String text) {
     return SnackBar(
       dismissDirection: DismissDirection.endToStart,
       backgroundColor: whiteColor,
@@ -155,9 +164,7 @@ class CheckingPage extends StatelessWidget {
         right: gW(50.0),
       ),
       content: Text(
-        success
-            ? "Muvaffaqiyatli Qo'shildi !"
-            : "Nimadir Xato bo'ldi, Qaytadan urinib ko'ring !",
+        text,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontStyle: FontStyle.italic,
@@ -171,38 +178,36 @@ class CheckingPage extends StatelessWidget {
   _viewChild(BuildContext context, Criteria data, int __) {
     return Ink(
       decoration: BoxDecoration(
+      
         border: Border.all(color: mainColor),
         borderRadius: BorderRadius.circular(
           gW(10.0),
         ),
       ),
       child: ExpansionTile(
+        collapsedIconColor: mainColor,
+        iconColor: mainColor,
+       
+        backgroundColor: Colors.white,
         expandedAlignment: Alignment.topCenter,
         childrenPadding:
             EdgeInsets.only(left: gW(20.0), right: gW(20.0), bottom: gW(20.0)),
-        leading: IconButton(
-          onPressed: () {
-            context.read<CheckingProvider>().submitFunction(__);
-          },
-          icon: context.watch<CheckingProvider>().criteries[__]
-              ? Icon(
-                  Icons.check,
-                  color: Colors.green,
-                  size: gW(45.0),
-                )
-              : Ink(
-                  height: gW(52.0),
-                  width: gW(52.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green, width: gW(3.0)),
-                    borderRadius: BorderRadius.circular(
-                      gW(26.0),
-                    ),
-                  ),
-                ),
-        ),
+        leading: TextButton(
+            style: TextButton.styleFrom(shadowColor: whiteColor,elevation: 0), 
+              onPressed: () {
+                context.read<CheckingProvider>().submitFunction(__);
+              },
+              child: Icon(
+                context.watch<CheckingProvider>().criteries[__]
+                    ? Icons.add
+                    : Icons.check_box_outline_blank,
+                color: Colors.cyan,
+                size: gW(45.0),
+              ),
+            ),
         title: Text(
           data.criteriaLetter,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.red,

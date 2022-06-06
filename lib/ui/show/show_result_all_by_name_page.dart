@@ -26,22 +26,20 @@ class ShowResultAllByNamePage extends StatelessWidget {
       body: FutureBuilder(
         future: ResultService().getResultAllByName(who),
         builder: (context, AsyncSnapshot<List<Result>> snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
+          if (snap.connectionState == ConnectionState.done) {
+            if (snap.data!.isEmpty) {
+              return NoDataFoundByNameWidget(who);
+            }
+            return ShowResultWidget(snap.data!);
+          } else {
             return Center(
               child: CupertinoActivityIndicator(
                 radius: gW(50.0),
               ),
             );
-          } else if (snap.connectionState == ConnectionState.done &&
-              snap.data!.isNotEmpty) {
-             return ShowResultWidget(snap.data!);
-          } else {
-            return NoDataFoundByNameWidget(who);
           }
         },
       ),
     );
   }
-
-  
 }

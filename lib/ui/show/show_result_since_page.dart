@@ -20,25 +20,25 @@ class ShowResultSincePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("uuuwho"),
+        title: Text(who),
         backgroundColor: mainColor,
         elevation: 0,
       ),
       body: FutureBuilder(
-        future: ResultService()
-            .getResultsSince(DateTime.now().add(Duration(days: days)), who),
+        future: ResultService().getResultsSinceByName(
+            DateTime.now().add(Duration(days: days)), who),
         builder: (context, AsyncSnapshot<List<Result>> snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
+          if (snap.connectionState == ConnectionState.done) {
+            if (snap.data!.isNotEmpty) {
+              return ShowResultWidget(snap.data!);
+            }
+            return NoDataFoundByNameWidget(who);
+          } else {
             return Center(
               child: CupertinoActivityIndicator(
                 radius: gW(50.0),
               ),
             );
-          } else if (snap.connectionState == ConnectionState.done &&
-              snap.hasData) {
-            return ShowResultWidget(snap.data!);
-          } else {
-            return NoDataFoundByNameWidget(who);
           }
         },
       ),

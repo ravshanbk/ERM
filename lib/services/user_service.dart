@@ -1,58 +1,62 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:roxcrm/config/env.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:roxcrm/hive/userhive_hive.dart';
+import 'package:roxcrm/models/response_model.dart';
 import 'package:roxcrm/models/user/sign_up_user_model.dart';
-import 'package:roxcrm/pppp.dart';
+import 'package:roxcrm/models/user/user_auth_model.dart';
+
+import 'package:roxcrm/services/result_service.dart';
 
 class UserService {
-  Future<SignUpUser> signUpUser(
-      String name, String email, String parol, bool isAdmin) async {
+  Future<SignedUpUser> signUpUser(UserToSignUp user) async {
     try {
       Response res = await Dio().post(
-        Secret.api_user,
-        data: {
-          "name": name,
-          "email": email,
-          "password": parol,
-          "isAdmin": isAdmin
-        },
+        "${ResultService.localhost}/user",
+        data: user.toJson(),
       );
-      debugPrint("StatusMessage: " + res.statusMessage.toString());
-      debugPrint("StatusMessage: " + res.statusCode.toString());
-      if (res.statusCode == 201) {
-        return SignUpUser.fromJson(res.data);
-      } else {
-        return SignUpUser(email: res.data.toString());
-      }
+      SignedUpUser data = SignedUpUser.fromJson(res.data);
+
+      return data;
     } catch (e) {
-      return SignUpUser(email: "Mavjud bo'lgan foydalanuvchi");
+
+      return SignedUpUser(email: "Mavjud bo'lgan foydalanuvchi");
     }
   }
 
-  signInUser(
+  Future<ResModel> signInUser(
     String email,
     String parol,
   ) async {
     try {
       Response res = await Dio().post(
-        Secret.api_auth,
+        "${ResultService.localhost}/auth",
         data: {
           "email": email,
           "password": parol,
         },
       );
-      if (res.statusCode == 200) {
-        debugPrint("AUTH-TOKEN: " + res.headers['x-auth-token'].toString());
-        UserHiveHive().authToken(res.headers["x-auth-token"].toString());
-        return true;
-      } else {
-        return false;
-      }
-    } on DioError catch (e) {
-      p(e.response!.data);
+      UserAuth data = UserAuth.fromJson(res.data);
 
-      throw Exception("UserService signInUser: " + e.toString());
+      debugPrint("AUTH-TOKEN: " + res.headers['x-auth-token'].toString());
+      UserHiveService().saveUser(
+        authToken: res.headers["x-auth-token"].toString().substring(1, res.headers["x-auth-token"].toString().length-1),
+        email: data.email!,
+        name: data.name!,
+      );
+      return ResModel(success: true, text: "Muvaffaqiyat!!");
+    } on DioError catch (e) {
+      return ResModel(success: false, text: e.response!.data.toString());
+    }
+  }
+
+  Future<ResModel> deleteUser(String who) async {
+    try {
+      Response res =
+          await Dio().delete("${ResultService.localhost}/user/one?who=$who");
+
+      return ResModel(success: true, text:"Muvaffaqiyat!!!");
+    } on DioError catch (e) {
+      return ResModel(success: false, text: e.response!.data!.toString());
     }
   }
 }

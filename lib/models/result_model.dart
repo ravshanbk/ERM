@@ -7,7 +7,7 @@ class Result {
     this.v,
   });
 
-  String? when;
+int? when;
   List<ResultElement>? result;
   String? who;
   String? id;

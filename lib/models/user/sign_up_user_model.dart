@@ -1,5 +1,5 @@
-class SignUpUser {
-  SignUpUser({
+class SignedUpUser {
+  SignedUpUser({
     this.id,
     this.name,
     this.email,
@@ -11,7 +11,7 @@ class SignUpUser {
   String? email;
   bool? isAdmin;
 
-  factory SignUpUser.fromJson(Map<String, dynamic> json) => SignUpUser(
+  factory SignedUpUser.fromJson(Map<String, dynamic> json) => SignedUpUser(
         id: json["_id"],
         name: json["name"],
         email: json["email"],
@@ -20,6 +20,25 @@ class SignUpUser {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "name": name,
+        "email": email,
+        "isAdmin": isAdmin,
+      };
+}
+
+class UserToSignUp {
+  String name, email, password;
+  bool isAdmin;
+  UserToSignUp({
+    required this.email,
+    required this.isAdmin,
+    required this.name,
+    required this.password,
+  });
+  
+  Map<String, dynamic> toJson() => {
+    
+        "password": password,
         "name": name,
         "email": email,
         "isAdmin": isAdmin,

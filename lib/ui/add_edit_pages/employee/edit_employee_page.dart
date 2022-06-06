@@ -7,6 +7,7 @@ import 'package:roxcrm/providers/employee/employee_edit_page_provider.dart';
 import 'package:roxcrm/ui/widgets/submit_button_for_appbar.dart';
 
 class EditEmployeePage extends StatelessWidget {
+
   const EditEmployeePage({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +16,7 @@ class EditEmployeePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: mainColor,
         elevation: 0,
-        title: const Text("Xodim ismi"),
+        title:const Text("..o'zgartirish"),
         actions: [
           SubmitButtonForAppBar(context.watch<EmployeeEditingPageProvider>().isInProgress,
             onPressed: () async {
@@ -51,69 +52,71 @@ class EditEmployeePage extends StatelessWidget {
           key: context.read<EmployeeEditingPageProvider>().formKey,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: gW(20.0)),
-            child: Column(
-              children: [
-                SizedBox(height: gH(20.0)),
-                SizedBox(
-                  height: gH(60.0),
-                  child: TextFormField(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: gH(20.0)),
+                  SizedBox(
+                    height: gH(60.0),
+                    child: TextFormField(
+                        validator: (v) {
+                        if (v!.isEmpty) {
+                          return "Bo'sh qoldirmang";
+                        }
+                      },
+                      keyboardType: TextInputType.name,
+                      cursorColor: mainColor,
+                      controller: context
+                          .read<EmployeeEditingPageProvider>()
+                          .nameController,
+                      style: TextStyle(
+                        fontSize: gW(20.0),
+                      ),
+                      decoration: _inputDecoration("Ism..."),
+                    ),
+                  ),
+                  SizedBox(height: gH(20.0)),
+                  SizedBox(
+                    height: gH(60.0),
+                    child: TextFormField(
+                        validator: (v) {
+                        if (v!.isEmpty) {
+                          return "Bosh qoldirmang";
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      cursorColor: mainColor,
+                      controller: context
+                          .read<EmployeeEditingPageProvider>()
+                          .ageController,
+                      style: TextStyle(
+                        fontSize: gW(20.0),
+                      ),
+                      decoration: _inputDecoration("Yoshi.."),
+                    ),
+                  ),
+                  SizedBox(height: gH(20.0)),
+                  SizedBox(
+                    height: gH(60.0),
+                    child: TextFormField(
                       validator: (v) {
-                      if (v!.isEmpty) {
-                        return "Bosh qoldirmang";
-                      }
-                    },
-                    keyboardType: TextInputType.name,
-                    cursorColor: mainColor,
-                    controller: context
-                        .read<EmployeeEditingPageProvider>()
-                        .nameController,
-                    style: TextStyle(
-                      fontSize: gW(20.0),
+                        if (v!.isEmpty) {
+                          return "Bosh qoldirmang";
+                        }
+                      },
+                      keyboardType: TextInputType.phone,
+                      cursorColor: mainColor,
+                      controller: context
+                          .read<EmployeeEditingPageProvider>()
+                          .phoneNumberController,
+                      style: TextStyle(
+                        fontSize: gW(20.0),
+                      ),
+                      decoration: _inputDecoration("Telefon..."),
                     ),
-                    decoration: _inputDecoration("Ism..."),
                   ),
-                ),
-                SizedBox(height: gH(20.0)),
-                SizedBox(
-                  height: gH(60.0),
-                  child: TextFormField(
-                      validator: (v) {
-                      if (v!.isEmpty) {
-                        return "Bosh qoldirmang";
-                      }
-                    },
-                    keyboardType: TextInputType.number,
-                    cursorColor: mainColor,
-                    controller: context
-                        .read<EmployeeEditingPageProvider>()
-                        .ageController,
-                    style: TextStyle(
-                      fontSize: gW(20.0),
-                    ),
-                    decoration: _inputDecoration("Yoshi.."),
-                  ),
-                ),
-                SizedBox(height: gH(20.0)),
-                SizedBox(
-                  height: gH(60.0),
-                  child: TextFormField(
-                    validator: (v) {
-                      if (v!.isEmpty) {
-                        return "Bosh qoldirmang";
-                      }
-                    },
-                    keyboardType: TextInputType.phone,
-                    cursorColor: mainColor,
-                    controller: context
-                        .read<EmployeeEditingPageProvider>()
-                        .phoneNumberController,
-                    style: TextStyle(
-                      fontSize: gW(20.0),
-                    ),
-                    decoration: _inputDecoration("Telefon..."),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

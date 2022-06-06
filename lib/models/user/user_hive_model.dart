@@ -9,5 +9,10 @@ class UserHive extends HiveObject {
   @HiveField(0)
   late String authToken;
 
+  @HiveField(1)
+  late String name;
+  @HiveField(2)
+  late String email;
+
  
 }
