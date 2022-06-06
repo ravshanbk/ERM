@@ -15,7 +15,6 @@ class ConsideringPage extends StatelessWidget {
   const ConsideringPage(this.who, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-   
     final List<String> considerings = [
       "OXIRGI BIR OY",
       "OXIRGI BIR HAFTA",
@@ -26,7 +25,7 @@ class ConsideringPage extends StatelessWidget {
         backgroundColor: mainColor,
         elevation: 0,
         title: Text(
-         who,
+          who,
         ),
       ),
       body: Column(
@@ -46,11 +45,9 @@ class ConsideringPage extends StatelessWidget {
                       builder: (context) {
                         switch (__) {
                           case 0:
-                            return ShowResultSincePage(
-                                days: -30, who: who);
+                            return ShowResultSincePage(days: -30, who: who);
                           case 1:
-                            return ShowResultSincePage(
-                                days: -7, who:who);
+                            return ShowResultSincePage(days: -7, who: who);
                           case 2:
                             return ShowResultAllByNamePage(who: who);
                           default:
@@ -97,7 +94,6 @@ class ConsideringPage extends StatelessWidget {
               ),
             ),
             child: ExpansionTile(
-           
               iconColor: mainColor,
               collapsedIconColor: Colors.transparent,
               textColor: mainColor,
@@ -282,7 +278,6 @@ class ConsideringPage extends StatelessWidget {
       ),
       onConfirm: (date) {
         if (isFrom) {
-          debugPrint(date.toString());
           Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
               .initFrom(date);
           Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
@@ -290,8 +285,6 @@ class ConsideringPage extends StatelessWidget {
         } else {
           Provider.of<GetEmployeeResultIntervalProvider>(context, listen: false)
               .initTo(date);
-
-          debugPrint(date.toString());
         }
       },
       locale: LocaleType.uz,

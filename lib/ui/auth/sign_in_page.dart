@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:roxcrm/core/colors.dart';
 import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
-import 'package:roxcrm/models/dfms_model.dart';
-import 'package:roxcrm/models/response_model.dart';
 import 'package:roxcrm/providers/auth/sign_in_provider.dart';
 import 'package:roxcrm/services/user_service.dart';
 import 'package:roxcrm/ui/auth/sign_up_page.dart';
@@ -16,10 +14,9 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     SizeConfig().init(context);
     return Scaffold(
-      resizeToAvoidBottomInset:true,
+      resizeToAvoidBottomInset: true,
       appBar: _appBar(context),
       body: Form(
         key: Provider.of<SignInProvider>(context, listen: false).formKey,
@@ -69,6 +66,7 @@ class SignInPage extends StatelessWidget {
                 controller: context.watch<SignInProvider>().passwordController,
                 validator: (v) {
                   if (v!.isEmpty) return "Parolingizni kiriting";
+                  return null;
                 },
               ),
               SizedBox(height: gH(20.0)),

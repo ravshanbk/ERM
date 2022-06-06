@@ -70,6 +70,7 @@ class AddEmployeePage extends StatelessWidget {
     return TextFormField(
       validator: (v) {
         if (v!.isEmpty) return "Nimadir kiriting!!!";
+        return null;
       },
       keyboardType: TextInputType.name,
       cursorColor: mainColor,
@@ -85,11 +86,11 @@ class AddEmployeePage extends StatelessWidget {
     return TextFormField(
       validator: (v) {
         if (v!.isEmpty) return "Nimadir kiriting!!!";
+        return null;
       },
       keyboardType: TextInputType.phone,
       cursorColor: mainColor,
-      controller:
-          context.read<EmployeeAddPageProvider>().phoneNumberController,
+      controller: context.read<EmployeeAddPageProvider>().phoneNumberController,
       style: TextStyle(
         fontSize: gW(18.0),
       ),
@@ -101,6 +102,7 @@ class AddEmployeePage extends StatelessWidget {
     return TextFormField(
       validator: (v) {
         if (v!.isEmpty) return "Nimadir kiriting!!!";
+        return null;
       },
       keyboardType: TextInputType.number,
       maxLines: null,
@@ -114,24 +116,22 @@ class AddEmployeePage extends StatelessWidget {
   }
 
   _submitButton(BuildContext context) {
-    return SubmitButtonForAppBar(context.watch<EmployeeAddPageProvider>().isInProgress,
+    return SubmitButtonForAppBar(
+      context.watch<EmployeeAddPageProvider>().isInProgress,
       onPressed: () async {
         if (Provider.of<EmployeeAddPageProvider>(context, listen: false)
             .formKey
             .currentState!
             .validate()) {
-
           await Hive.openBox<Employee>("employee");
 
           var criteria = EmployeeHive();
           await criteria.addEmployee(
             DateTime.now().toString(),
-              context.read<EmployeeAddPageProvider>().nameController.text,
-              context.read<EmployeeAddPageProvider>().ageController.text,
-              context
-                  .read<EmployeeAddPageProvider>()
-                  .phoneNumberController
-                  .text,);
+            context.read<EmployeeAddPageProvider>().nameController.text,
+            context.read<EmployeeAddPageProvider>().ageController.text,
+            context.read<EmployeeAddPageProvider>().phoneNumberController.text,
+          );
           await context.read<EmployeeAddPageProvider>().clearControllers();
           Future.delayed(const Duration(milliseconds: 500), () {
             Navigator.pop(context);

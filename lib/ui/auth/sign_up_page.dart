@@ -66,7 +66,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         Provider.of<SignUpProvider>(context, listen: false)
                             .controllers[1]
                             .text) {
-                              
                       Provider.of<SignUpProvider>(context, listen: false)
                           .clear();
                       Provider.of<SignUpProvider>(context, listen: false)
@@ -141,6 +140,7 @@ class _SignUpPageState extends State<SignUpPage> {
         if (v!.isEmpty) {
           return "Hech biri bo'sh qolmasligi kerak !";
         }
+        return null;
       },
     );
   }

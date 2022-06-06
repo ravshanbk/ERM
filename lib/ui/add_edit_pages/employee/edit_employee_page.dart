@@ -7,7 +7,6 @@ import 'package:roxcrm/providers/employee/employee_edit_page_provider.dart';
 import 'package:roxcrm/ui/widgets/submit_button_for_appbar.dart';
 
 class EditEmployeePage extends StatelessWidget {
-
   const EditEmployeePage({Key? key}) : super(key: key);
 
   @override
@@ -16,9 +15,10 @@ class EditEmployeePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: mainColor,
         elevation: 0,
-        title:const Text("..o'zgartirish"),
+        title: const Text("..o'zgartirish"),
         actions: [
-          SubmitButtonForAppBar(context.watch<EmployeeEditingPageProvider>().isInProgress,
+          SubmitButtonForAppBar(
+            context.watch<EmployeeEditingPageProvider>().isInProgress,
             onPressed: () async {
               if (Provider.of<EmployeeEditingPageProvider>(context,
                       listen: false)
@@ -59,10 +59,11 @@ class EditEmployeePage extends StatelessWidget {
                   SizedBox(
                     height: gH(60.0),
                     child: TextFormField(
-                        validator: (v) {
+                      validator: (v) {
                         if (v!.isEmpty) {
                           return "Bo'sh qoldirmang";
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.name,
                       cursorColor: mainColor,
@@ -79,10 +80,11 @@ class EditEmployeePage extends StatelessWidget {
                   SizedBox(
                     height: gH(60.0),
                     child: TextFormField(
-                        validator: (v) {
+                      validator: (v) {
                         if (v!.isEmpty) {
                           return "Bosh qoldirmang";
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.number,
                       cursorColor: mainColor,
@@ -103,6 +105,7 @@ class EditEmployeePage extends StatelessWidget {
                         if (v!.isEmpty) {
                           return "Bosh qoldirmang";
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.phone,
                       cursorColor: mainColor,

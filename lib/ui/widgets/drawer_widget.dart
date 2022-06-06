@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:roxcrm/core/extentions_my.dart';
 import 'package:roxcrm/core/colors.dart';
@@ -7,7 +6,6 @@ import 'package:roxcrm/core/show_toast.dart';
 import 'package:roxcrm/core/size_config.dart';
 import 'package:roxcrm/hive/boxes.dart';
 import 'package:roxcrm/hive/userhive_hive.dart';
-import 'package:roxcrm/models/user/user_hive_model.dart';
 import 'package:roxcrm/services/user_service.dart';
 import 'package:roxcrm/ui/auth/sign_in_page.dart';
 
